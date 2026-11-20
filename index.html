@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Academic Calendar - 2026 | Nursing and Midwifery College, Gopalganj</title>
+
+  <!-- Tailwind CSS for clean toolbar & responsive layout chrome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Inter Font for crisp, legible typography on screen and print -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       BASE & TYPOGRAPHY
+       ========================================================================== */
+    :root {
+      --color-Y: #F4E32E; /* Theory Class */
+      --color-C: #A89F5D; /* Clinical Practice */
+      --color-P: #A891C8; /* LP */
+      --color-R: #EF4E33; /* Practicum */
+      --color-W: #C94A60; /* Weekly Holiday */
+      --color-G: #3EB549; /* School Leave */
+      --color-B: #5A74AF; /* Exam */
+      --color-NONE: #FFFFFF;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ==========================================================================
+       PAPER SHEET CONTAINER (SCREEN PREVIEW)
+       ========================================================================== */
+    .sheet-viewport {
+      width: 100%;
+      overflow-x: auto;
+      padding: 16px;
+    }
+
+    .calendar-sheet {
+      background: #ffffff;
+      width: 100%;
+      min-width: 1280px;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 16px 18px 18px 18px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12), 0 1px 3px rgba(15, 23, 42, 0.08);
+      border: 1px solid #cbd5e1;
+    }
+
+    /* ==========================================================================
+       HEADER & LEGEND
+       ========================================================================== */
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    .title-block {
+      flex: 1;
+      text-align: center;
+      padding-left: 12px;
+    }
+
+    .title-main {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #111111;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    .title-sub1 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.3;
+      margin: 2px 0 0 0;
+    }
+
+    .title-sub2 {
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      line-height: 1.3;
+      margin: 1px 0 0 0;
+    }
+
+    /* Subtle visual cue for contenteditable text on screen only */
+    [contenteditable="true"] {
+      outline: none;
+      border-radius: 4px;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    [contenteditable="true"]:hover {
+      background-color: rgba(59, 130, 246, 0.07);
+    }
+
+    [contenteditable="true"]:focus {
+      background-color: rgba(59, 130, 246, 0.12);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
+    }
+
+    /* Legend Box (2-row compact grid) */
+    .legend-box {
+      border: 2px solid #111111;
+      background: #ffffff;
+      padding: 6px 10px;
+      flex-shrink: 0;
+    }
+
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      column-gap: 14px;
+      row-gap: 5px;
+      align-items: center;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .legend-swatch {
+      width: 18px;
+      height: 12px;
+      border: 1px solid #222222;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+
+    .legend-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #111111;
+      padding: 0 2px;
+    }
+
+    /* ==========================================================================
+       36-COLUMN ACADEMIC CALENDAR TABLE
+       ========================================================================== */
+    .calendar-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      border: 2px solid #111111;
+      user-select: none;
+    }
+
+    .calendar-table th,
+    .calendar-table td {
+      border: 1px solid #333333;
+      padding: 1px 2px;
+      text-align: center;
+      vertical-align: middle;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* Month header row */
+    .month-header {
+      font-size: 11px;
+      font-weight: 800;
+      background-color: #f8fafc;
+      color: #111111;
+      padding: 4px 2px !important;
+      letter-spacing: 0.01em;
+      border-bottom: 1.5px solid #111111 !important;
+    }
+
+    /* Sub-header row (Date | Day | Schedule) */
+    .sub-header {
+      font-size: 8.5px;
+      font-weight: 700;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      padding: 3px 1px !important;
+      border-bottom: 2px solid #111111 !important;
+    }
+
+    /* Column width proportions across 12 months (each month = 8.3333%) */
+    .col-date {
+      width: 1.65%;
+    }
+    .col-day {
+      width: 4.35%;
+    }
+    .col-sched {
+      width: 2.3333%;
+    }
+
+    /* Body cell styling */
+    .cell-date {
+      font-size: 9px;
+      font-weight: 700;
+      color: #111111;
+      height: 19px;
+    }
+
+    .cell-day {
+      font-size: 8.5px;
+      font-weight: 500;
+      color: #1f2937;
+      text-align: left !important;
+      padding-left: 3px !important;
+      text-overflow: clip;
+    }
+
+    .cell-sched {
+      cursor: crosshair;
+      padding: 0 !important;
+      transition: filter 0.08s ease;
+    }
+
+    .cell-sched:hover {
+      filter: brightness(0.92);
+      box-shadow: inset 0 0 0 1.5px rgba(15, 23, 42, 0.55);
+    }
+
+    .cell-empty {
+      background-color: #f8fafc;
+      cursor: default;
+    }
+
+    /* Thicker 2px solid #111 vertical borders separating each month block */
+    .month-start {
+      border-left: 2px solid #111111 !important;
+    }
+
+    .month-end {
+      border-right: 2px solid #111111 !important;
+    }
+
+    /* Palette color classes for Schedule cells (Strictly solid fill, no text) */
+    .bg-code-Y { background-color: var(--color-Y) !important; }
+    .bg-code-C { background-color: var(--color-C) !important; }
+    .bg-code-P { background-color: var(--color-P) !important; }
+    .bg-code-R { background-color: var(--color-R) !important; }
+    .bg-code-W { background-color: var(--color-W) !important; }
+    .bg-code-G { background-color: var(--color-G) !important; }
+    .bg-code-B { background-color: var(--color-B) !important; }
+    .bg-code-NONE { background-color: var(--color-NONE) !important; }
+
+    /* Palette button active ring */
+    .palette-btn.active {
+      outline: 2px solid #0f172a;
+      outline-offset: 2px;
+      transform: translateY(-1px);
+    }
+
+    /* ==========================================================================
+       PRINT STYLES (@media print) — SINGLE LANDSCAPE PAGE (A4 / A3)
+       ========================================================================== */
+    @page {
+      size: landscape;
+      margin: 5mm;
+    }
+
+    @media print {
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+        overflow: hidden !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .sheet-viewport {
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      .calendar-sheet {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .sheet-header {
+        margin-bottom: 4px !important;
+        flex-shrink: 0 !important;
+      }
+
+      .title-main {
+        font-size: 14pt !important;
+      }
+
+      .title-sub1 {
+        font-size: 9.5pt !important;
+      }
+
+      .title-sub2 {
+        font-size: 8.5pt !important;
+      }
+
+      .legend-box {
+        padding: 3px 6px !important;
+        border-width: 1.5px !important;
+      }
+
+      .legend-grid {
+        column-gap: 8px !important;
+        row-gap: 2px !important;
+      }
+
+      .legend-swatch {
+        width: 13px !important;
+        height: 9px !important;
+      }
+
+      .legend-label {
+        font-size: 7.2pt !important;
+      }
+
+      [contenteditable="true"] {
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+
+      .calendar-table {
+        flex: 1 1 auto !important;
+        height: 100% !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .calendar-table tr {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+
+      .month-header {
+        font-size: 8pt !important;
+        padding: 2px 1px !important;
+      }
+
+      .sub-header {
+        font-size: 6pt !important;
+        padding: 1.5px 0.5px !important;
+      }
+
+      .cell-date {
+        font-size: 6.5pt !important;
+        height: auto !important;
+        padding: 0.5px 1px !important;
+      }
+
+      .cell-day {
+        font-size: 6.1pt !important;
+        padding: 0.5px 1px 0.5px 2px !important;
+      }
+
+      .cell-sched:hover {
+        filter: none !important;
+        box-shadow: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ========================================================================
+       INTERACTIVE TOOLBAR (HIDDEN WHEN PRINTING)
+       ======================================================================== -->
+  <header class="no-print sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-[1600px] mx-auto px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-3">
+
+      <!-- Left: Brand & Quick Hint -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+          26
+        </div>
+        <div>
+          <h2 class="text-sm font-bold text-slate-900 leading-tight">Academic Calendar 2026</h2>
+          <p class="text-[11px] text-slate-500 leading-tight">Click or drag any Schedule cell to paint &bull; Click titles/legend to edit text</p>
+        </div>
+      </div>
+
+      <!-- Center: Interactive Color Palette Selector -->
+      <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200" role="group" aria-label="Color Palette">
+        <span class="text-[11px] font-semibold text-slate-600 px-1.5 hidden sm:inline">Brush:</span>
+
+        <button type="button" data-code="Y" title="Theory Class (Yellow)"
+          class="palette-btn active flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#F4E32E"></span>
+          <span class="hidden md:inline">Theory</span>
+        </button>
+
+        <button type="button" data-code="C" title="Clinical Practice (Olive)"
+          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#A89F5D"></span>
+          <span class="hidden md:inline">Clinical</span>
+        </button>
+
+        <button type="button" data-code="P" title="LP (Lavender)"
+          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#A891C8"></span>
+          <span class="hidden md:inline">LP</span>
+        </button>
+
+        <button type="button" data-code="R" title="Practicum (Orange-Red)"
+          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#EF4E33"></span>
+          <span class="hidden md:inline">Practicum</span>
+        </button>
+
+        <button type="button" data-code="W" title="Weekly Holiday (Crimson/Rose)"
+          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#C94A60"></span>
+          <span class="hidden md:inline">Holiday</span>
+        </button>
+
+        <button type="button" data-code="G" title="School Leave (Bright Green)"
+          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#3EB549"></span>
+          <span class="hidden md:inline">Leave</span>
+        </button>
+
+        <button type="button" data-code="B" title="Exam (Slate Blue)"
+          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#5A74AF"></span>
+          <span class="hidden md:inline">Exam</span>
+        </button>
+
+        <button type="button" data-code="" title="Clear / White"
+          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-400 bg-white inline-block"></span>
+          <span class="hidden md:inline">Clear</span>
+        </button>
+      </div>
+
+      <!-- Right: Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button id="btnReset" type="button"
+          class="px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition">
+          Reset
+        </button>
+
+        <button id="btnDownload" type="button"
+          class="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 shadow-sm transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+          </svg>
+          Download HTML
+        </button>
+
+        <button id="btnPrint" type="button"
+          class="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V4h12v5M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v6H6v-6z" />
+          </svg>
+          Print / Save as PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Toast Message Box (Non-blocking feedback, never uses alert()) -->
+  <div id="toast" class="no-print fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg border border-slate-700 transition-opacity">
+  </div>
+
+  <!-- ========================================================================
+       PRINTABLE SINGLE-PAGE LANDSCAPE CALENDAR SHEET
+       ======================================================================== -->
+  <main class="sheet-viewport flex-1">
+    <section id="calendarSheet" class="calendar-sheet">
+
+      <!-- Sheet Header: Title Block + Top-Right Legend Box -->
+      <div class="sheet-header">
+        <!-- Title Block -->
+        <div class="title-block">
+          <h1 class="title-main" contenteditable="true" spellcheck="false">Academic Calendar - 2026</h1>
+          <p class="title-sub1" contenteditable="true" spellcheck="false">3rd Year, Diploma in Midwifery</p>
+          <p class="title-sub2" contenteditable="true" spellcheck="false">Nursing and Midwifery College, Gopalganj</p>
+        </div>
+
+        <!-- Legend Box (Compact 2-row grid with 7 swatches) -->
+        <div class="legend-box" aria-label="Color Legend">
+          <div class="legend-grid">
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: #F4E32E;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">Theory Class</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: #A89F5D;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">Clinical Practice</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: #A891C8;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">LP</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: #EF4E33;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">Practicum</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: #C94A60;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">Weekly Holiday</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: #3EB549;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">School Leave</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-swatch" style="background-color: #5A74AF;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">Exam</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12-Month Side-by-Side Table (36 Columns x 31 Rows) -->
+      <table id="calendarTable" class="calendar-table" aria-label="2026 Academic Calendar">
+        <colgroup id="calendarColgroup"></colgroup>
+        <thead id="calendarHead"></thead>
+        <tbody id="calendarBody"></tbody>
+      </table>
+
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       CALENDAR GENERATION, INTERACTIVE PAINTING & EXPORT LOGIC
+       ======================================================================== -->
+  <script id="calendarAppScript">
+    (function () {
+      'use strict';
+
+      const YEAR = 2026;
+      const MONTHS = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+      ];
+      const WEEKDAYS = [
+        'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+      ];
+
+      /**
+       * Exact pre-filled 2026 schedule color map.
+       * Codes: Y=Yellow, C=Olive, P=Purple, R=Orange-Red, W=Crimson/Rose, G=Green, B=Blue, ''=White/Blank
+       */
+      const DEFAULT_SCHEDULE = {
+        0: { // January (31)
+          1:'Y', 2:'W', 3:'Y', 4:'Y', 5:'Y', 6:'Y', 7:'Y', 8:'Y', 9:'W', 10:'Y',
+          11:'Y', 12:'Y', 13:'Y', 14:'Y', 15:'Y', 16:'W', 17:'Y', 18:'Y', 19:'Y', 20:'Y',
+          21:'Y', 22:'Y', 23:'W', 24:'Y', 25:'Y', 26:'Y', 27:'Y', 28:'Y', 29:'Y', 30:'W', 31:'Y'
+        },
+        1: { // February (28)
+          1:'Y', 2:'Y', 3:'Y', 4:'Y', 5:'Y', 6:'W', 7:'Y', 8:'Y', 9:'Y', 10:'Y',
+          11:'Y', 12:'Y', 13:'W', 14:'Y', 15:'Y', 16:'Y', 17:'Y', 18:'Y', 19:'Y', 20:'W',
+          21:'Y', 22:'Y', 23:'Y', 24:'Y', 25:'Y', 26:'Y', 27:'W', 28:'Y'
+        },
+        2: { // March (31)
+          1:'C', 2:'C', 3:'C', 4:'C', 5:'C', 6:'W', 7:'C', 8:'C', 9:'C', 10:'C',
+          11:'C', 12:'C', 13:'W', 14:'G', 15:'G', 16:'C', 17:'C', 18:'C', 19:'C', 20:'W',
+          21:'G', 22:'G', 23:'G', 24:'G', 25:'G', 26:'G', 27:'W', 28:'C', 29:'C', 30:'C', 31:'C'
+        },
+        3: { // April (30)
+          1:'C', 2:'C', 3:'W', 4:'C', 5:'C', 6:'C', 7:'C', 8:'C', 9:'C', 10:'W',
+          11:'C', 12:'C', 13:'C', 14:'C', 15:'C', 16:'C', 17:'W', 18:'C', 19:'C', 20:'C',
+          21:'C', 22:'C', 23:'C', 24:'W', 25:'C', 26:'C', 27:'C', 28:'C', 29:'C', 30:'C'
+        },
+        4: { // May (31)
+          1:'W', 2:'Y', 3:'Y', 4:'Y', 5:'Y', 6:'Y', 7:'Y', 8:'W', 9:'Y', 10:'Y',
+          11:'Y', 12:'Y', 13:'Y', 14:'Y', 15:'W', 16:'Y', 17:'Y', 18:'Y', 19:'Y', 20:'Y',
+          21:'Y', 22:'W', 23:'G', 24:'G', 25:'G', 26:'G', 27:'G', 28:'G', 29:'W', 30:'Y', 31:''
+        },
+        5: { // June (30)
+          1:'C', 2:'C', 3:'C', 4:'C', 5:'W', 6:'C', 7:'C', 8:'C', 9:'C', 10:'C',
+          11:'C', 12:'W', 13:'C', 14:'C', 15:'C', 16:'C', 17:'C', 18:'C', 19:'W', 20:'C',
+          21:'C', 22:'C', 23:'C', 24:'C', 25:'C', 26:'W', 27:'C', 28:'C', 29:'C', 30:'C'
+        },
+        6: { // July (31)
+          1:'C', 2:'C', 3:'W', 4:'C', 5:'C', 6:'C', 7:'C', 8:'C', 9:'C', 10:'W',
+          11:'P', 12:'P', 13:'P', 14:'P', 15:'P', 16:'P', 17:'W', 18:'B', 19:'B', 20:'B',
+          21:'B', 22:'B', 23:'B', 24:'W', 25:'', 26:'', 27:'', 28:'', 29:'', 30:'', 31:'W'
+        },
+        7: { // August (31)
+          1:'C', 2:'C', 3:'C', 4:'C', 5:'C', 6:'C', 7:'W', 8:'C', 9:'C', 10:'C',
+          11:'C', 12:'C', 13:'C', 14:'W', 15:'R', 16:'R', 17:'R', 18:'R', 19:'R', 20:'R',
+          21:'W', 22:'R', 23:'R', 24:'R', 25:'R', 26:'R', 27:'R', 28:'W', 29:'R', 30:'R', 31:''
+        },
+        8: { // September (30)
+          1:'C', 2:'C', 3:'C', 4:'W', 5:'C', 6:'C', 7:'C', 8:'C', 9:'C', 10:'C',
+          11:'W', 12:'Y', 13:'Y', 14:'Y', 15:'Y', 16:'Y', 17:'Y', 18:'W', 19:'Y', 20:'Y',
+          21:'Y', 22:'Y', 23:'Y', 24:'Y', 25:'W', 26:'Y', 27:'Y', 28:'Y', 29:'Y', 30:'Y'
+        },
+        9: { // October (31)
+          1:'P', 2:'W', 3:'P', 4:'P', 5:'P', 6:'P', 7:'P', 8:'P', 9:'W', 10:'B',
+          11:'B', 12:'B', 13:'B', 14:'B', 15:'B', 16:'W', 17:'G', 18:'G', 19:'G', 20:'G',
+          21:'G', 22:'G', 23:'W', 24:'B', 25:'B', 26:'B', 27:'B', 28:'B', 29:'B', 30:'W', 31:'W'
+        },
+        10: { // November (30)
+          1:'R', 2:'R', 3:'R', 4:'R', 5:'R', 6:'W', 7:'R', 8:'R', 9:'R', 10:'R',
+          11:'R', 12:'R', 13:'W', 14:'R', 15:'R', 16:'R', 17:'R', 18:'R', 19:'R', 20:'W',
+          21:'B', 22:'B', 23:'B', 24:'B', 25:'B', 26:'B', 27:'W', 28:'B', 29:'B', 30:'B'
+        },
+        11: { // December (31)
+          1:'P', 2:'P', 3:'P', 4:'W', 5:'P', 6:'P', 7:'P', 8:'P', 9:'P', 10:'P',
+          11:'W', 12:'P', 13:'P', 14:'P', 15:'P', 16:'P', 17:'P', 18:'W', 19:'P', 20:'P',
+          21:'P', 22:'P', 23:'P', 24:'P', 25:'W', 26:'B', 27:'B', 28:'B', 29:'B', 30:'B', 31:'B'
+        }
+      };
+
+      // Runtime state (supports pre-embedded saved state when downloaded as standalone HTML)
+      let currentSchedule = window.__SAVED_SCHEDULE__
+        ? JSON.parse(JSON.stringify(window.__SAVED_SCHEDULE__))
+        : JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+
+      let activeBrushCode = 'Y';
+      let isMousePainting = false;
+      let toastTimer = null;
+
+      // DOM References
+      const colgroupEl = document.getElementById('calendarColgroup');
+      const theadEl = document.getElementById('calendarHead');
+      const tbodyEl = document.getElementById('calendarBody');
+      const toastEl = document.getElementById('toast');
+
+      /**
+       * Returns the number of days in a given month (0-indexed) of YEAR.
+       */
+      function getDaysInMonth(monthIdx) {
+        return new Date(YEAR, monthIdx + 1, 0).getDate();
+      }
+
+      /**
+       * Returns the CSS class name for a schedule color code.
+       */
+      function getColorClass(code) {
+        return code ? 'bg-code-' + code : 'bg-code-NONE';
+      }
+
+      /**
+       * Shows a brief non-blocking toast message.
+       */
+      function showToast(message) {
+        if (!toastEl) return;
+        toastEl.textContent = message;
+        toastEl.classList.remove('hidden');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toastEl.classList.add('hidden');
+        }, 2600);
+      }
+
+      /**
+       * Applies a color code to a specific Schedule <td> cell.
+       * Strictly keeps the cell text empty (solid color fill only).
+       */
+      function paintCell(td, code) {
+        const m = Number(td.dataset.month);
+        const d = Number(td.dataset.day);
+        if (Number.isNaN(m) || Number.isNaN(d)) return;
+
+        // Remove any previous color class
+        td.classList.remove(
+          'bg-code-Y', 'bg-code-C', 'bg-code-P', 'bg-code-R',
+          'bg-code-W', 'bg-code-G', 'bg-code-B', 'bg-code-NONE'
+        );
+
+        td.classList.add(getColorClass(code));
+        td.dataset.code = code;
+        td.textContent = ''; // Enforce strictly NO text inside colored cells
+
+        if (!currentSchedule[m]) currentSchedule[m] = {};
+        currentSchedule[m][d] = code;
+      }
+
+      /**
+       * Builds the 36-column colgroup, 2-row header, and 31-row body dynamically.
+       */
+      function renderCalendar() {
+        // 1. Colgroup
+        colgroupEl.innerHTML = '';
+        for (let m = 0; m < 12; m++) {
+          const cDate = document.createElement('col');
+          cDate.className = 'col-date';
+          const cDay = document.createElement('col');
+          cDay.className = 'col-day';
+          const cSched = document.createElement('col');
+          cSched.className = 'col-sched';
+          colgroupEl.appendChild(cDate);
+          colgroupEl.appendChild(cDay);
+          colgroupEl.appendChild(cSched);
+        }
+
+        // 2. Table Head (Row 1: Month Names, Row 2: Date | Day | Schedule)
+        theadEl.innerHTML = '';
+        const trMonths = document.createElement('tr');
+        const trSubs = document.createElement('tr');
+
+        for (let m = 0; m < 12; m++) {
+          const thMonth = document.createElement('th');
+          thMonth.colSpan = 3;
+          thMonth.textContent = MONTHS[m];
+          thMonth.className = 'month-header month-start month-end';
+          trMonths.appendChild(thMonth);
+
+          const thDate = document.createElement('th');
+          thDate.textContent = 'Date';
+          thDate.className = 'sub-header month-start';
+
+          const thDay = document.createElement('th');
+          thDay.textContent = 'Day';
+          thDay.className = 'sub-header';
+
+          const thSched = document.createElement('th');
+          thSched.textContent = 'Schedule';
+          thSched.className = 'sub-header month-end';
+
+          trSubs.appendChild(thDate);
+          trSubs.appendChild(thDay);
+          trSubs.appendChild(thSched);
+        }
+
+        theadEl.appendChild(trMonths);
+        theadEl.appendChild(trSubs);
+
+        // 3. Table Body (Days 1 to 31)
+        tbodyEl.innerHTML = '';
+        for (let day = 1; day <= 31; day++) {
+          const tr = document.createElement('tr');
+
+          for (let m = 0; m < 12; m++) {
+            const daysInMonth = getDaysInMonth(m);
+            const isValidDay = day <= daysInMonth;
+
+            const tdDate = document.createElement('td');
+            const tdDay = document.createElement('td');
+            const tdSched = document.createElement('td');
+
+            if (isValidDay) {
+              const dateObj = new Date(YEAR, m, day);
+              const weekdayName = WEEKDAYS[dateObj.getDay()];
+              const code = (currentSchedule[m] && currentSchedule[m][day]) || '';
+
+              tdDate.textContent = String(day);
+              tdDate.className = 'cell-date month-start';
+
+              tdDay.textContent = weekdayName;
+              tdDay.className = 'cell-day';
+
+              // Schedule cell: solid background color ONLY, strictly no text
+              tdSched.textContent = '';
+              tdSched.className = 'cell-sched month-end ' + getColorClass(code);
+              tdSched.dataset.month = String(m);
+              tdSched.dataset.day = String(day);
+              tdSched.dataset.code = code;
+            } else {
+              // Invalid date for this month (e.g., Feb 29-31, Apr 31)
+              tdDate.className = 'cell-date cell-empty month-start';
+              tdDay.className = 'cell-day cell-empty';
+              tdSched.className = 'cell-empty month-end';
+            }
+
+            tr.appendChild(tdDate);
+            tr.appendChild(tdDay);
+            tr.appendChild(tdSched);
+          }
+
+          tbodyEl.appendChild(tr);
+        }
+      }
+
+      /**
+       * Sets up click & drag painting for mouse and touch devices.
+       */
+      function bindPaintingEvents() {
+        // Mouse painting
+        tbodyEl.addEventListener('mousedown', (e) => {
+          const cell = e.target.closest('.cell-sched');
+          if (!cell) return;
+          e.preventDefault();
+          isMousePainting = true;
+          paintCell(cell, activeBrushCode);
+        });
+
+        tbodyEl.addEventListener('mouseover', (e) => {
+          if (!isMousePainting) return;
+          const cell = e.target.closest('.cell-sched');
+          if (!cell) return;
+          paintCell(cell, activeBrushCode);
+        });
+
+        window.addEventListener('mouseup', () => {
+          isMousePainting = false;
+        });
+
+        // Touch tap painting
+        tbodyEl.addEventListener('touchstart', (e) => {
+          const cell = e.target.closest('.cell-sched');
+          if (!cell) return;
+          paintCell(cell, activeBrushCode);
+        }, { passive: true });
+      }
+
+      /**
+       * Sets up interactive toolbar controls (Palette, Print, Download, Reset).
+       */
+      function bindToolbarEvents() {
+        // Palette buttons
+        const paletteBtns = document.querySelectorAll('.palette-btn');
+        paletteBtns.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            paletteBtns.forEach((b) => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeBrushCode = btn.dataset.code || '';
+          });
+        });
+
+        // Print / Save as PDF
+        document.getElementById('btnPrint').addEventListener('click', () => {
+          window.print();
+        });
+
+        // Reset to default 2026 colors
+        document.getElementById('btnReset').addEventListener('click', () => {
+          currentSchedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+          renderCalendar();
+          showToast('Calendar colors reset to default 2026 schedule.');
+        });
+
+        // Download current state as a clean standalone HTML file
+        document.getElementById('btnDownload').addEventListener('click', () => {
+          try {
+            // Clone document to embed current schedule state cleanly
+            const clone = document.documentElement.cloneNode(true);
+
+            // Remove any existing saved-state script tag before adding fresh one
+            const oldSaved = clone.querySelector('#savedScheduleState');
+            if (oldSaved) oldSaved.remove();
+
+            // Inject current schedule JSON before the main app script
+            const savedScript = document.createElement('script');
+            savedScript.id = 'savedScheduleState';
+            savedScript.textContent = 'window.__SAVED_SCHEDULE__ = ' + JSON.stringify(currentSchedule) + ';';
+
+            const mainScript = clone.querySelector('#calendarAppScript');
+            if (mainScript && mainScript.parentNode) {
+              mainScript.parentNode.insertBefore(savedScript, mainScript);
+            }
+
+            // Ensure toast is hidden in exported file
+            const cloneToast = clone.querySelector('#toast');
+            if (cloneToast) cloneToast.classList.add('hidden');
+
+            const htmlOutput = '<!DOCTYPE html>\n' + clone.outerHTML;
+            const blob = new Blob([htmlOutput], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Academic_Calendar_2026_Midwifery.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast('Standalone HTML calendar downloaded!');
+          } catch (err) {
+            console.error('Download failed:', err);
+            showToast('Could not download file. Please use Print / Save as PDF.');
+          }
+        });
+      }
+
+      // Initialize on DOM ready
+      renderCalendar();
+      bindPaintingEvents();
+      bindToolbarEvents();
+    })();
+  </script>
+</body>
+</html>
