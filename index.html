@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Academic Calendar - 2026 | Nursing and Midwifery College, Gopalganj.</title>
 
-  <!-- Tailwind CSS for clean toolbar & responsive chrome -->
+  <!-- Tailwind CSS for clean toolbar & responsive controls -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Inter Font for crisp, legible typography on screen and print -->
@@ -15,19 +15,8 @@
 
   <style>
     /* ==========================================================================
-       COLOR TOKENS & BASE RESET
+       BASE RESET & PRINT COLOR FIDELITY
        ========================================================================== */
-    :root {
-      --color-Y: #f2e03a; /* Theory class */
-      --color-C: #4caf50; /* Clinical practice */
-      --color-P: #8c88d8; /* LP */
-      --color-R: #f05a3a; /* Practicum */
-      --color-W: #d94b5b; /* Weekly Holiday */
-      --color-G: #a6d854; /* Special Leave */
-      --color-B: #5c7cfa; /* Exam */
-      --color-NONE: #ffffff;
-    }
-
     * {
       box-sizing: border-box;
       -webkit-print-color-adjust: exact !important;
@@ -197,8 +186,7 @@
     }
 
     /* ==========================================================================
-       CRITICAL FIX: VERTICAL SUB-HEADERS (Date | Day | Schedule)
-       100% visible with generous breathing room and zero clipping
+       VERTICAL SUB-HEADERS (Date | Day | Schedule) — ZERO CLIPPING
        ========================================================================== */
     tr.sub-header th {
       height: 62px;
@@ -225,17 +213,10 @@
       vertical-align: middle;
     }
 
-    /* Column proportions across 12 months (each month = 8.3333%)
-       Date (~16-22px), Day (~44-58px), Schedule (~18-26px) */
-    .col-date {
-      width: 1.75%;
-    }
-    .col-day {
-      width: 4.55%;
-    }
-    .col-sched {
-      width: 2.0333%;
-    }
+    /* Column proportions across 12 months (each month = 8.3333%) */
+    .col-date { width: 1.75%; }
+    .col-day { width: 4.55%; }
+    .col-sched { width: 2.0333%; }
 
     /* Body cell styling */
     .cell-date {
@@ -271,39 +252,20 @@
     }
 
     /* Thicker 1.8px solid #000 vertical borders separating each month */
-    .month-start {
-      border-left: 1.8px solid #000000 !important;
-    }
+    .month-start { border-left: 1.8px solid #000000 !important; }
+    .month-end { border-right: 1.8px solid #000000 !important; }
 
-    .month-end {
-      border-right: 1.8px solid #000000 !important;
-    }
-
-    /* Solid background color classes for Schedule cells (Strictly no text) */
-    .bg-code-Y { background-color: var(--color-Y) !important; }
-    .bg-code-C { background-color: var(--color-C) !important; }
-    .bg-code-P { background-color: var(--color-P) !important; }
-    .bg-code-R { background-color: var(--color-R) !important; }
-    .bg-code-W { background-color: var(--color-W) !important; }
-    .bg-code-G { background-color: var(--color-G) !important; }
-    .bg-code-B { background-color: var(--color-B) !important; }
-    .bg-code-NONE { background-color: var(--color-NONE) !important; }
-
-    /* Palette button active ring */
-    .palette-btn.active {
+    /* Palette chip active state */
+    .palette-chip.active {
       outline: 2px solid #0f172a;
       outline-offset: 2px;
-      transform: translateY(-1px);
+      background-color: #ffffff;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
     }
 
     /* ==========================================================================
        PRINT STYLES (@media print) — SINGLE LANDSCAPE PAGE (A3 / A4)
        ========================================================================== */
-    @page {
-      size: A3 landscape;
-      margin: 6mm;
-    }
-
     @media print {
       html, body {
         width: 100%;
@@ -348,17 +310,9 @@
         flex-shrink: 0 !important;
       }
 
-      .title-main {
-        font-size: 16pt !important;
-      }
-
-      .title-sub1 {
-        font-size: 10.5pt !important;
-      }
-
-      .title-sub2 {
-        font-size: 9.5pt !important;
-      }
+      .title-main { font-size: 16pt !important; }
+      .title-sub1 { font-size: 10.5pt !important; }
+      .title-sub2 { font-size: 9.5pt !important; }
 
       .legend-box {
         padding: 3px 7px !important;
@@ -375,9 +329,7 @@
         height: 10px !important;
       }
 
-      .legend-label {
-        font-size: 8pt !important;
-      }
+      .legend-label { font-size: 8pt !important; }
 
       [contenteditable="true"] {
         background: transparent !important;
@@ -401,7 +353,6 @@
         padding: 2.5px 1px !important;
       }
 
-      /* Print-safe vertical sub-header dimensions */
       tr.sub-header th {
         height: 15mm !important;
         padding: 2px 0 !important;
@@ -430,6 +381,8 @@
       }
     }
   </style>
+  <!-- Dynamic @page rule updated when switching between A3 and A4 Landscape -->
+  <style id="dynamicPageStyle">@page { size: A3 landscape; margin: 6mm; }</style>
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -437,101 +390,155 @@
        INTERACTIVE TOOLBAR (HIDDEN WHEN PRINTING)
        ======================================================================== -->
   <header class="toolbar no-print sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
-    <div class="max-w-[1640px] mx-auto px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-3">
+    <div class="max-w-[1640px] mx-auto px-3 sm:px-5 py-2.5 flex flex-col gap-2">
 
-      <!-- Left: Brand & Instructions -->
-      <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-sm shadow-sm">
-          26
+      <!-- Top Row: Brand, Paper Size, Text Editor, Exports & Print -->
+      <div class="flex flex-wrap items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+            26
+          </div>
+          <div>
+            <h2 class="text-sm font-bold text-slate-900 leading-tight">Academic Calendar 2026</h2>
+            <p class="text-[11px] text-slate-500 leading-tight">Paint schedule cells &bull; Pick custom colors &bull; Print to PDF or Microsoft Word</p>
+          </div>
         </div>
-        <div>
-          <h2 class="text-sm font-bold text-slate-900 leading-tight">Academic Calendar 2026</h2>
-          <p class="text-[11px] text-slate-500 leading-tight">Click or drag any Schedule cell to paint &bull; Click titles or legend to edit</p>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Page Size Switcher (A3 / A4 Landscape) -->
+          <div class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-300 text-xs" title="Select Paper Size for PDF & Word Export">
+            <button type="button" id="btnSizeA3" data-size="A3"
+              class="px-2.5 py-1 rounded-md font-semibold bg-white text-slate-900 shadow-sm transition">
+              A3 Landscape
+            </button>
+            <button type="button" id="btnSizeA4" data-size="A4"
+              class="px-2.5 py-1 rounded-md font-semibold text-slate-600 hover:text-slate-900 transition">
+              A4 Landscape
+            </button>
+          </div>
+
+          <!-- Edit Text Drawer Toggle -->
+          <button id="btnToggleTextDrawer" type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-800 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Edit Text
+          </button>
+
+          <!-- Reset Button -->
+          <button id="btnReset" type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition">
+            Reset
+          </button>
+
+          <!-- Download Standalone HTML -->
+          <button id="btnDownloadHtml" type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 shadow-sm transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+            </svg>
+            Download HTML
+          </button>
+
+          <!-- Microsoft Word (.doc) Export & Print -->
+          <button id="btnExportWord" type="button"
+            class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-700 hover:bg-blue-800 shadow-sm transition flex items-center gap-1.5"
+            title="Download as Microsoft Word (.doc) formatted for Landscape printing">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Export to Word (.doc)
+          </button>
+
+          <!-- Browser Print / Save as PDF -->
+          <button id="btnPrint" type="button"
+            class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V4h12v5M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v6H6v-6z" />
+            </svg>
+            Print / Save as PDF
+          </button>
         </div>
       </div>
 
-      <!-- Center: Brush Palette -->
-      <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200" role="group" aria-label="Color Palette">
-        <span class="text-[11px] font-semibold text-slate-600 px-1.5 hidden sm:inline">Brush:</span>
+      <!-- Bottom Row: Dynamic Color Brush Palette with Live Color Pickers & + Add Color -->
+      <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200">
+        <span class="text-[11px] font-semibold text-slate-600 px-1.5">Brushes (Click swatch to change color):</span>
+        <div id="paletteContainer" class="flex flex-wrap items-center gap-1.5"></div>
 
-        <button type="button" data-code="Y" title="Theory class (Yellow)"
-          class="palette-btn active flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#f2e03a"></span>
-          <span class="hidden md:inline">Theory</span>
-        </button>
-
-        <button type="button" data-code="C" title="Clinical practice (Bright Green)"
-          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#4caf50"></span>
-          <span class="hidden md:inline">Clinical</span>
-        </button>
-
-        <button type="button" data-code="P" title="LP (Soft Purple/Blue)"
-          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#8c88d8"></span>
-          <span class="hidden md:inline">LP</span>
-        </button>
-
-        <button type="button" data-code="R" title="Practicum (Orange-Red)"
-          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#f05a3a"></span>
-          <span class="hidden md:inline">Practicum</span>
-        </button>
-
-        <button type="button" data-code="W" title="Weekly Holiday (Red/Crimson)"
-          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#d94b5b"></span>
-          <span class="hidden md:inline">Holiday</span>
-        </button>
-
-        <button type="button" data-code="G" title="Special Leave (Lime Green)"
-          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#a6d854"></span>
-          <span class="hidden md:inline">Leave</span>
-        </button>
-
-        <button type="button" data-code="B" title="Exam (Dark Teal/Blue)"
-          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#5c7cfa"></span>
-          <span class="hidden md:inline">Exam</span>
-        </button>
-
-        <button type="button" data-code="" title="Eraser (White / Clear)"
-          class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
+        <!-- Eraser -->
+        <button type="button" id="btnEraser"
+          class="palette-chip flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/80 border border-slate-300 text-xs font-medium text-slate-800 hover:bg-white transition"
+          title="Eraser (Clear cell to white)">
           <span class="w-3.5 h-3.5 rounded-sm border border-slate-400 bg-white inline-block"></span>
-          <span class="hidden md:inline">Eraser</span>
+          <span>Eraser</span>
+        </button>
+
+        <!-- Add Custom Category -->
+        <button type="button" id="btnAddCategory"
+          class="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-800 text-white text-xs font-semibold hover:bg-slate-700 transition ml-1">
+          <span>+ Add Color</span>
         </button>
       </div>
 
-      <!-- Right: Actions -->
-      <div class="flex items-center gap-2">
-        <button id="btnReset" type="button"
-          class="px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition">
-          Reset
-        </button>
-
-        <button id="btnDownload" type="button"
-          class="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 shadow-sm transition flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
-          </svg>
-          Download HTML
-        </button>
-
-        <button id="btnPrint" type="button"
-          class="px-4 py-2 rounded-lg text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 shadow-sm transition flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V4h12v5M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v6H6v-6z" />
-          </svg>
-          Print / Save as PDF
-        </button>
+      <!-- Collapsible Edit Text Drawer -->
+      <div id="textDrawer" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-3 mt-0.5">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-800">Customize Calendar Headings &amp; Column Labels</span>
+          <button type="button" id="btnCloseTextDrawer" class="text-xs font-semibold text-slate-500 hover:text-slate-800">Close &times;</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2.5 text-xs">
+          <label class="flex flex-col gap-1 lg:col-span-2">
+            <span class="font-semibold text-slate-600">Main Title</span>
+            <input id="inputTitleMain" type="text" class="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-900 font-medium" />
+          </label>
+          <label class="flex flex-col gap-1 lg:col-span-2">
+            <span class="font-semibold text-slate-600">Subtitle Line 1</span>
+            <input id="inputTitleSub1" type="text" class="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-900 font-medium" />
+          </label>
+          <label class="flex flex-col gap-1 lg:col-span-2">
+            <span class="font-semibold text-slate-600">Subtitle Line 2 (Institution)</span>
+            <input id="inputTitleSub2" type="text" class="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-900 font-medium" />
+          </label>
+          <label class="flex flex-col gap-1 lg:col-span-2">
+            <span class="font-semibold text-slate-600">Col 1 Header</span>
+            <input id="inputColDate" type="text" class="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-900 font-medium" />
+          </label>
+          <label class="flex flex-col gap-1 lg:col-span-2">
+            <span class="font-semibold text-slate-600">Col 2 Header</span>
+            <input id="inputColDay" type="text" class="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-900 font-medium" />
+          </label>
+          <label class="flex flex-col gap-1 lg:col-span-2">
+            <span class="font-semibold text-slate-600">Col 3 Header</span>
+            <input id="inputColSched" type="text" class="px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-900 font-medium" />
+          </label>
+        </div>
       </div>
+
     </div>
   </header>
 
-  <!-- Non-blocking toast notification -->
-  <div id="toast" class="no-print fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg border border-slate-700 transition-opacity">
+  <!-- Custom Non-Blocking Reset Confirmation Modal -->
+  <div id="resetModal" class="no-print fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border border-slate-200">
+      <h3 class="text-base font-bold text-slate-900">Reset Calendar to Default?</h3>
+      <p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+        This will restore the original 2026 Midwifery schedule colors, default legend categories, and default headings.
+      </p>
+      <div class="flex items-center justify-end gap-2 mt-4">
+        <button type="button" id="btnCancelReset" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200">
+          Cancel
+        </button>
+        <button type="button" id="btnConfirmReset" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700">
+          Yes, Reset Everything
+        </button>
+      </div>
+    </div>
   </div>
+
+  <!-- Non-blocking toast notification -->
+  <div id="toast" class="no-print fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg border border-slate-700 transition-opacity"></div>
 
   <!-- ========================================================================
        PRINTABLE SINGLE-PAGE LANDSCAPE CALENDAR SHEET
@@ -539,45 +546,16 @@
   <main class="sheet-viewport flex-1">
     <section id="calendarSheet" class="calendar-sheet">
 
-      <!-- Sheet Header: Editable Title Block + Compact Color Legend Box -->
+      <!-- Sheet Header: Editable Title Block + Dynamic Color Legend Box -->
       <div class="sheet-header">
         <div class="title-block">
-          <h1 class="title-main" contenteditable="true" spellcheck="false">Academic Calendar - 2026</h1>
-          <p class="title-sub1" contenteditable="true" spellcheck="false">3rd Year, Diploma in Midwifery</p>
-          <p class="title-sub2" contenteditable="true" spellcheck="false">Nursing and Midwifery College, Gopalganj.</p>
+          <h1 id="elTitleMain" class="title-main" contenteditable="true" spellcheck="false">Academic Calendar - 2026</h1>
+          <p id="elTitleSub1" class="title-sub1" contenteditable="true" spellcheck="false">3rd Year, Diploma in Midwifery</p>
+          <p id="elTitleSub2" class="title-sub2" contenteditable="true" spellcheck="false">Nursing and Midwifery College, Gopalganj.</p>
         </div>
 
         <div class="legend-box" aria-label="Color Legend">
-          <div class="legend-grid">
-            <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #f2e03a;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">Theory class</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #4caf50;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">Clinical practice</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #8c88d8;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">LP</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #f05a3a;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">Practicum</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #d94b5b;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">Weekly Holiday</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #a6d854;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">Special Leave</span>
-            </div>
-            <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #5c7cfa;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">Exam</span>
-            </div>
-          </div>
+          <div id="legendGrid" class="legend-grid"></div>
         </div>
       </div>
 
@@ -592,14 +570,16 @@
   </main>
 
   <!-- ========================================================================
-       CALENDAR GENERATION, INTERACTIVE PAINTING & EXPORT LOGIC
+       CALENDAR GENERATION, CUSTOMIZATION, WORD (.DOC) & HTML EXPORT LOGIC
        ======================================================================== -->
   <script id="calendarAppScript">
     (function () {
       'use strict';
 
+      const STORAGE_KEY = 'academic_calendar_2026_state_v2';
       const YEAR = 2026;
-      const MONTHS = [
+
+      const DEFAULT_MONTHS = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
       ];
@@ -607,113 +587,145 @@
         'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
       ];
 
-      /**
-       * Pre-populated 2026 Academic Calendar schedule color map.
-       * Codes:
-       *   Y = Theory class (#f2e03a)
-       *   C = Clinical practice (#4caf50)
-       *   P = LP (#8c88d8)
-       *   R = Practicum (#f05a3a)
-       *   W = Weekly Holiday (#d94b5b) — All Fridays in 2026
-       *   G = Special Leave (#a6d854)
-       *   B = Exam (#5c7cfa)
-       *   '' = White / Blank
-       */
+      const DEFAULT_CATEGORIES = [
+        { id: 'Y', label: 'Theory class', color: '#f2e03a' },
+        { id: 'C', label: 'Clinical practice', color: '#4caf50' },
+        { id: 'P', label: 'LP', color: '#8c88d8' },
+        { id: 'R', label: 'Practicum', color: '#f05a3a' },
+        { id: 'W', label: 'Weekly Holiday', color: '#d94b5b' },
+        { id: 'G', label: 'Special Leave', color: '#a6d854' },
+        { id: 'B', label: 'Exam', color: '#5c7cfa' }
+      ];
+
+      const DEFAULT_TEXTS = {
+        titleMain: 'Academic Calendar - 2026',
+        titleSub1: '3rd Year, Diploma in Midwifery',
+        titleSub2: 'Nursing and Midwifery College, Gopalganj.',
+        colDate: 'Date',
+        colDay: 'Day',
+        colSched: 'Schedule',
+        months: [...DEFAULT_MONTHS]
+      };
+
       const DEFAULT_SCHEDULE = {
-        0: { // January (31) — Theory class + Fridays Holiday
+        0: { // January (31)
           1:'Y', 2:'W', 3:'Y', 4:'Y', 5:'Y', 6:'Y', 7:'Y', 8:'Y', 9:'W', 10:'Y',
           11:'Y', 12:'Y', 13:'Y', 14:'Y', 15:'Y', 16:'W', 17:'Y', 18:'Y', 19:'Y', 20:'Y',
           21:'Y', 22:'Y', 23:'W', 24:'Y', 25:'Y', 26:'Y', 27:'Y', 28:'Y', 29:'Y', 30:'W', 31:'Y'
         },
-        1: { // February (28) — Theory class + Fridays Holiday
+        1: { // February (28)
           1:'Y', 2:'Y', 3:'Y', 4:'Y', 5:'Y', 6:'W', 7:'Y', 8:'Y', 9:'Y', 10:'Y',
           11:'Y', 12:'Y', 13:'W', 14:'Y', 15:'Y', 16:'Y', 17:'Y', 18:'Y', 19:'Y', 20:'W',
           21:'Y', 22:'Y', 23:'Y', 24:'Y', 25:'Y', 26:'Y', 27:'W', 28:'Y'
         },
-        2: { // March (31) — Early Theory/Special Leave + Clinical practice in late March
+        2: { // March (31)
           1:'Y', 2:'Y', 3:'Y', 4:'Y', 5:'Y', 6:'W', 7:'Y', 8:'Y', 9:'Y', 10:'Y',
           11:'Y', 12:'Y', 13:'W', 14:'G', 15:'G', 16:'C', 17:'C', 18:'C', 19:'C', 20:'W',
           21:'C', 22:'C', 23:'C', 24:'C', 25:'C', 26:'C', 27:'W', 28:'C', 29:'C', 30:'C', 31:'C'
         },
-        3: { // April (30) — Lime/Special Leave & Clinical blocks
+        3: { // April (30)
           1:'G', 2:'G', 3:'W', 4:'G', 5:'G', 6:'G', 7:'G', 8:'G', 9:'G', 10:'W',
           11:'G', 12:'G', 13:'G', 14:'G', 15:'G', 16:'G', 17:'W', 18:'G', 19:'G', 20:'G',
           21:'G', 22:'G', 23:'G', 24:'W', 25:'G', 26:'G', 27:'G', 28:'G', 29:'G', 30:'G'
         },
-        4: { // May (31) — Theory class + Clinical practice in late May
+        4: { // May (31)
           1:'W', 2:'Y', 3:'Y', 4:'Y', 5:'Y', 6:'Y', 7:'Y', 8:'W', 9:'Y', 10:'Y',
           11:'Y', 12:'Y', 13:'Y', 14:'Y', 15:'W', 16:'Y', 17:'Y', 18:'Y', 19:'Y', 20:'Y',
           21:'Y', 22:'W', 23:'C', 24:'C', 25:'C', 26:'C', 27:'C', 28:'C', 29:'W', 30:'Y', 31:'Y'
         },
-        5: { // June (30) — Clinical practice & Special Leave / Theory mix
+        5: { // June (30)
           1:'G', 2:'G', 3:'G', 4:'G', 5:'W', 6:'G', 7:'G', 8:'G', 9:'G', 10:'G',
           11:'G', 12:'W', 13:'C', 14:'C', 15:'C', 16:'C', 17:'C', 18:'C', 19:'W', 20:'C',
           21:'C', 22:'C', 23:'C', 24:'C', 25:'C', 26:'W', 27:'G', 28:'G', 29:'G', 30:'G'
         },
-        6: { // July (31) — Theory / Special Leave + LP & Exam blocks
+        6: { // July (31)
           1:'Y', 2:'Y', 3:'W', 4:'Y', 5:'Y', 6:'Y', 7:'Y', 8:'Y', 9:'Y', 10:'W',
           11:'P', 12:'P', 13:'P', 14:'P', 15:'P', 16:'P', 17:'W', 18:'B', 19:'B', 20:'B',
           21:'B', 22:'B', 23:'B', 24:'W', 25:'G', 26:'G', 27:'G', 28:'G', 29:'G', 30:'G', 31:'W'
         },
-        7: { // August (31) — Clinical/Leave early Aug + Practicum (Orange-Red) Aug 15-30
+        7: { // August (31)
           1:'G', 2:'G', 3:'G', 4:'G', 5:'G', 6:'G', 7:'W', 8:'G', 9:'G', 10:'G',
           11:'G', 12:'G', 13:'G', 14:'W', 15:'R', 16:'R', 17:'R', 18:'R', 19:'R', 20:'R',
           21:'W', 22:'R', 23:'R', 24:'R', 25:'R', 26:'R', 27:'R', 28:'W', 29:'R', 30:'R', 31:''
         },
-        8: { // September (30) — LP/Exam & Theory blocks
+        8: { // September (30)
           1:'P', 2:'P', 3:'P', 4:'W', 5:'P', 6:'P', 7:'P', 8:'P', 9:'P', 10:'P',
           11:'W', 12:'Y', 13:'Y', 14:'Y', 15:'Y', 16:'Y', 17:'Y', 18:'W', 19:'Y', 20:'Y',
           21:'Y', 22:'Y', 23:'Y', 24:'Y', 25:'W', 26:'Y', 27:'Y', 28:'Y', 29:'Y', 30:'Y'
         },
-        9: { // October (31) — LP, Exam, and Clinical practice mid-Oct
+        9: { // October (31)
           1:'P', 2:'W', 3:'P', 4:'P', 5:'P', 6:'P', 7:'P', 8:'P', 9:'W', 10:'B',
           11:'B', 12:'B', 13:'B', 14:'B', 15:'B', 16:'W', 17:'C', 18:'C', 19:'C', 20:'C',
           21:'C', 22:'C', 23:'W', 24:'B', 25:'B', 26:'B', 27:'B', 28:'B', 29:'B', 30:'W', 31:'B'
         },
-        10: { // November (30) — Practicum (Orange-Red) Nov 1-19 + Exam late Nov
+        10: { // November (30)
           1:'R', 2:'R', 3:'R', 4:'R', 5:'R', 6:'W', 7:'R', 8:'R', 9:'R', 10:'R',
           11:'R', 12:'R', 13:'W', 14:'R', 15:'R', 16:'R', 17:'R', 18:'R', 19:'R', 20:'W',
           21:'B', 22:'B', 23:'B', 24:'B', 25:'B', 26:'B', 27:'W', 28:'B', 29:'B', 30:'B'
         },
-        11: { // December (31) — LP & Exam blocks
+        11: { // December (31)
           1:'P', 2:'P', 3:'P', 4:'W', 5:'P', 6:'P', 7:'P', 8:'P', 9:'P', 10:'P',
           11:'W', 12:'P', 13:'P', 14:'P', 15:'P', 16:'P', 17:'P', 18:'W', 19:'P', 20:'P',
           21:'P', 22:'P', 23:'P', 24:'P', 25:'W', 26:'B', 27:'B', 28:'B', 29:'B', 30:'B', 31:'B'
         }
       };
 
-      // Runtime state (preserves saved edits in downloaded HTML copies)
-      let currentSchedule = window.__SAVED_SCHEDULE__
-        ? JSON.parse(JSON.stringify(window.__SAVED_SCHEDULE__))
-        : JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+      // Load saved state from embedded HTML snapshot or localStorage
+      function loadInitialState() {
+        if (window.__SAVED_APP_STATE__) {
+          return JSON.parse(JSON.stringify(window.__SAVED_APP_STATE__));
+        }
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.schedule && parsed.categories && parsed.texts) {
+              return parsed;
+            }
+          }
+        } catch (e) {
+          console.warn('Could not read localStorage:', e);
+        }
+        return {
+          categories: JSON.parse(JSON.stringify(DEFAULT_CATEGORIES)),
+          texts: JSON.parse(JSON.stringify(DEFAULT_TEXTS)),
+          schedule: JSON.parse(JSON.stringify(DEFAULT_SCHEDULE)),
+          pageSize: 'A3'
+        };
+      }
 
-      let activeBrushCode = 'Y';
+      let state = loadInitialState();
+      let activeBrushCode = state.categories[0] ? state.categories[0].id : '';
       let isMousePainting = false;
       let toastTimer = null;
 
-      // DOM References
+      // DOM Elements
       const colgroupEl = document.getElementById('calendarColgroup');
       const theadEl = document.getElementById('calendarHead');
       const tbodyEl = document.getElementById('calendarBody');
+      const legendGridEl = document.getElementById('legendGrid');
+      const paletteContainerEl = document.getElementById('paletteContainer');
       const toastEl = document.getElementById('toast');
 
-      /**
-       * Returns total number of days in a 0-indexed month for YEAR.
-       */
-      function getDaysInMonth(monthIdx) {
-        return new Date(YEAR, monthIdx + 1, 0).getDate();
+      const elTitleMain = document.getElementById('elTitleMain');
+      const elTitleSub1 = document.getElementById('elTitleSub1');
+      const elTitleSub2 = document.getElementById('elTitleSub2');
+
+      const inputTitleMain = document.getElementById('inputTitleMain');
+      const inputTitleSub1 = document.getElementById('inputTitleSub1');
+      const inputTitleSub2 = document.getElementById('inputTitleSub2');
+      const inputColDate = document.getElementById('inputColDate');
+      const inputColDay = document.getElementById('inputColDay');
+      const inputColSched = document.getElementById('inputColSched');
+
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {
+          console.warn('Could not save to localStorage:', e);
+        }
       }
 
-      /**
-       * Maps a schedule color code to its CSS background class.
-       */
-      function getColorClass(code) {
-        return code ? 'bg-code-' + code : 'bg-code-NONE';
-      }
-
-      /**
-       * Displays a brief non-blocking toast message.
-       */
       function showToast(message) {
         if (!toastEl) return;
         toastEl.textContent = message;
@@ -721,13 +733,177 @@
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => {
           toastEl.classList.add('hidden');
-        }, 2600);
+        }, 2800);
       }
 
-      /**
-       * Helper to build a vertically rotated sub-header <th> with an inner span
-       * so 'Date', 'Day', and 'Schedule' are 100% visible with zero clipping.
-       */
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function getDaysInMonth(monthIdx) {
+        return new Date(YEAR, monthIdx + 1, 0).getDate();
+      }
+
+      function getCategoryHex(code) {
+        if (!code) return '#ffffff';
+        const cat = state.categories.find((c) => c.id === code);
+        return cat ? cat.color : '#ffffff';
+      }
+
+      function applyPageSize(size) {
+        state.pageSize = size === 'A4' ? 'A4' : 'A3';
+        const styleEl = document.getElementById('dynamicPageStyle');
+        if (styleEl) {
+          styleEl.textContent = `@page { size: ${state.pageSize} landscape; margin: 6mm; }`;
+        }
+        const btnA3 = document.getElementById('btnSizeA3');
+        const btnA4 = document.getElementById('btnSizeA4');
+        if (state.pageSize === 'A3') {
+          btnA3.className = 'px-2.5 py-1 rounded-md font-semibold bg-white text-slate-900 shadow-sm transition';
+          btnA4.className = 'px-2.5 py-1 rounded-md font-semibold text-slate-600 hover:text-slate-900 transition';
+        } else {
+          btnA4.className = 'px-2.5 py-1 rounded-md font-semibold bg-white text-slate-900 shadow-sm transition';
+          btnA3.className = 'px-2.5 py-1 rounded-md font-semibold text-slate-600 hover:text-slate-900 transition';
+        }
+        saveState();
+      }
+
+      function syncTextsToUI() {
+        elTitleMain.textContent = state.texts.titleMain;
+        elTitleSub1.textContent = state.texts.titleSub1;
+        elTitleSub2.textContent = state.texts.titleSub2;
+
+        inputTitleMain.value = state.texts.titleMain;
+        inputTitleSub1.value = state.texts.titleSub1;
+        inputTitleSub2.value = state.texts.titleSub2;
+        inputColDate.value = state.texts.colDate;
+        inputColDay.value = state.texts.colDay;
+        inputColSched.value = state.texts.colSched;
+      }
+
+      function renderPaletteAndLegend() {
+        paletteContainerEl.innerHTML = '';
+        legendGridEl.innerHTML = '';
+
+        state.categories.forEach((cat) => {
+          // 1. Toolbar Brush Chip with Live Color Picker & Inline Rename
+          const chip = document.createElement('div');
+          chip.className = `palette-chip flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/80 border border-slate-300 text-xs font-medium text-slate-800 cursor-pointer transition ${activeBrushCode === cat.id ? 'active' : ''}`;
+          chip.dataset.code = cat.id;
+
+          const colorInput = document.createElement('input');
+          colorInput.type = 'color';
+          colorInput.value = cat.color;
+          colorInput.title = 'Click to change color';
+          colorInput.className = 'w-4 h-4 p-0 border border-slate-600 rounded-xs cursor-pointer bg-transparent';
+          colorInput.addEventListener('click', (e) => e.stopPropagation());
+          colorInput.addEventListener('input', (e) => {
+            cat.color = e.target.value;
+            // Live-update legend swatch and all painted cells of this category
+            const swatch = legendGridEl.querySelector(`[data-legend-swatch="${cat.id}"]`);
+            if (swatch) swatch.style.backgroundColor = cat.color;
+            tbodyEl.querySelectorAll(`.cell-sched[data-code="${cat.id}"]`).forEach((td) => {
+              td.style.backgroundColor = cat.color;
+            });
+            saveState();
+          });
+
+          const labelSpan = document.createElement('span');
+          labelSpan.contentEditable = 'true';
+          labelSpan.spellcheck = false;
+          labelSpan.textContent = cat.label;
+          labelSpan.className = 'px-0.5 max-w-[110px] truncate';
+          labelSpan.title = 'Click to rename category';
+          labelSpan.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectBrush(cat.id);
+          });
+          labelSpan.addEventListener('input', () => {
+            cat.label = labelSpan.textContent.trim() || 'Category';
+            const legText = legendGridEl.querySelector(`[data-legend-label="${cat.id}"]`);
+            if (legText) legText.textContent = cat.label;
+            saveState();
+          });
+
+          chip.appendChild(colorInput);
+          chip.appendChild(labelSpan);
+
+          if (state.categories.length > 1) {
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.innerHTML = '&times;';
+            delBtn.title = 'Remove category';
+            delBtn.className = 'text-slate-400 hover:text-rose-600 font-bold pl-0.5 leading-none';
+            delBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              // Clear cells using this category
+              for (let m = 0; m < 12; m++) {
+                if (!state.schedule[m]) continue;
+                for (const d of Object.keys(state.schedule[m])) {
+                  if (state.schedule[m][d] === cat.id) {
+                    state.schedule[m][d] = '';
+                  }
+                }
+              }
+              state.categories = state.categories.filter((c) => c.id !== cat.id);
+              if (activeBrushCode === cat.id) {
+                activeBrushCode = state.categories[0] ? state.categories[0].id : '';
+              }
+              saveState();
+              renderPaletteAndLegend();
+              renderCalendar();
+              showToast(`Removed "${cat.label}" category.`);
+            });
+            chip.appendChild(delBtn);
+          }
+
+          chip.addEventListener('click', () => selectBrush(cat.id));
+          paletteContainerEl.appendChild(chip);
+
+          // 2. Sheet Legend Item
+          const legItem = document.createElement('div');
+          legItem.className = 'legend-item';
+
+          const legSwatch = document.createElement('span');
+          legSwatch.className = 'legend-swatch';
+          legSwatch.dataset.legendSwatch = cat.id;
+          legSwatch.style.backgroundColor = cat.color;
+
+          const legLabel = document.createElement('span');
+          legLabel.className = 'legend-label';
+          legLabel.dataset.legendLabel = cat.id;
+          legLabel.contentEditable = 'true';
+          legLabel.spellcheck = false;
+          legLabel.textContent = cat.label;
+          legLabel.addEventListener('input', () => {
+            cat.label = legLabel.textContent.trim() || 'Category';
+            labelSpan.textContent = cat.label;
+            saveState();
+          });
+
+          legItem.appendChild(legSwatch);
+          legItem.appendChild(legLabel);
+          legendGridEl.appendChild(legItem);
+        });
+
+        // Update Eraser active ring
+        const eraserBtn = document.getElementById('btnEraser');
+        if (eraserBtn) {
+          eraserBtn.classList.toggle('active', activeBrushCode === '');
+        }
+      }
+
+      function selectBrush(code) {
+        activeBrushCode = code;
+        document.querySelectorAll('.palette-chip').forEach((el) => {
+          el.classList.toggle('active', (el.dataset.code || '') === code);
+        });
+      }
+
       function createVerticalSubHeader(label, extraClass) {
         const th = document.createElement('th');
         if (extraClass) th.className = extraClass;
@@ -740,30 +916,20 @@
         return th;
       }
 
-      /**
-       * Paints a Schedule <td> cell with a solid color fill and strictly NO text.
-       */
       function paintCell(td, code) {
         const m = Number(td.dataset.month);
         const d = Number(td.dataset.day);
         if (Number.isNaN(m) || Number.isNaN(d)) return;
 
-        td.classList.remove(
-          'bg-code-Y', 'bg-code-C', 'bg-code-P', 'bg-code-R',
-          'bg-code-W', 'bg-code-G', 'bg-code-B', 'bg-code-NONE'
-        );
-
-        td.classList.add(getColorClass(code));
+        td.style.backgroundColor = getCategoryHex(code);
         td.dataset.code = code;
-        td.textContent = ''; // Enforce strictly NO text inside colored cells
+        td.textContent = ''; // Strictly NO text inside colored cells
 
-        if (!currentSchedule[m]) currentSchedule[m] = {};
-        currentSchedule[m][d] = code;
+        if (!state.schedule[m]) state.schedule[m] = {};
+        state.schedule[m][d] = code;
+        saveState();
       }
 
-      /**
-       * Generates the 36-column colgroup, 2-row header, and 31-row calendar body.
-       */
       function renderCalendar() {
         // 1. Colgroup
         colgroupEl.innerHTML = '';
@@ -779,7 +945,7 @@
           colgroupEl.appendChild(cSched);
         }
 
-        // 2. Table Head (Row 1: Month Names, Row 2: Vertical Date | Day | Schedule)
+        // 2. Table Head
         theadEl.innerHTML = '';
         const trMonths = document.createElement('tr');
         trMonths.className = 'month-row';
@@ -790,13 +956,19 @@
         for (let m = 0; m < 12; m++) {
           const thMonth = document.createElement('th');
           thMonth.colSpan = 3;
-          thMonth.textContent = MONTHS[m];
+          thMonth.contentEditable = 'true';
+          thMonth.spellcheck = false;
+          thMonth.textContent = state.texts.months[m] || DEFAULT_MONTHS[m];
           thMonth.className = 'month-start month-end';
+          thMonth.addEventListener('input', () => {
+            state.texts.months[m] = thMonth.textContent.trim() || DEFAULT_MONTHS[m];
+            saveState();
+          });
           trMonths.appendChild(thMonth);
 
-          trSubs.appendChild(createVerticalSubHeader('Date', 'month-start'));
-          trSubs.appendChild(createVerticalSubHeader('Day', ''));
-          trSubs.appendChild(createVerticalSubHeader('Schedule', 'month-end'));
+          trSubs.appendChild(createVerticalSubHeader(state.texts.colDate, 'month-start'));
+          trSubs.appendChild(createVerticalSubHeader(state.texts.colDay, ''));
+          trSubs.appendChild(createVerticalSubHeader(state.texts.colSched, 'month-end'));
         }
 
         theadEl.appendChild(trMonths);
@@ -818,7 +990,7 @@
             if (isValidDay) {
               const dateObj = new Date(YEAR, m, day);
               const weekdayName = WEEKDAYS[dateObj.getDay()];
-              const code = (currentSchedule[m] && currentSchedule[m][day]) || '';
+              const code = (state.schedule[m] && state.schedule[m][day]) || '';
 
               tdDate.textContent = String(day);
               tdDate.className = 'cell-date month-start';
@@ -826,14 +998,13 @@
               tdDay.textContent = weekdayName;
               tdDay.className = 'cell-day';
 
-              // Schedule cell: solid color block ONLY, strictly empty text
               tdSched.textContent = '';
-              tdSched.className = 'cell-sched month-end ' + getColorClass(code);
+              tdSched.className = 'cell-sched month-end';
+              tdSched.style.backgroundColor = getCategoryHex(code);
               tdSched.dataset.month = String(m);
               tdSched.dataset.day = String(day);
               tdSched.dataset.code = code;
             } else {
-              // Non-existent dates (e.g., Feb 29-31, Apr 31) shaded cleanly
               tdDate.className = 'cell-date cell-empty month-start';
               tdDay.className = 'cell-day cell-empty';
               tdSched.className = 'cell-empty month-end';
@@ -849,9 +1020,177 @@
       }
 
       /**
-       * Binds click-and-drag painting for mouse and touch interactions.
+       * Generates and downloads a native Microsoft Word (.doc) file using MSO XML
+       * configured for A3 or A4 Landscape printing with all current custom colors & text.
        */
-      function bindPaintingEvents() {
+      function exportToWordDoc() {
+        try {
+          const isA4 = state.pageSize === 'A4';
+          const pageWidth = isA4 ? '297mm' : '420mm';
+          const pageHeight = isA4 ? '210mm' : '297mm';
+          const margin = isA4 ? '6mm' : '8mm';
+          const titleFontPt = isA4 ? '13pt' : '16pt';
+          const sub1FontPt = isA4 ? '9pt' : '11pt';
+          const sub2FontPt = isA4 ? '8.5pt' : '10pt';
+          const monthFontPt = isA4 ? '7pt' : '8.5pt';
+          const subHeaderFontPt = isA4 ? '6pt' : '7.5pt';
+          const subHeaderHeight = isA4 ? '36pt' : '46pt';
+          const cellFontPt = isA4 ? '5.5pt' : '7pt';
+          const cellHeight = isA4 ? '11.5pt' : '15.5pt';
+          const legendFontPt = isA4 ? '6.5pt' : '8pt';
+
+          // Build compact Legend HTML table for Word
+          const legendCells = state.categories.map((cat) => `
+            <td style="border:none; padding:2pt 6pt 2pt 2pt; white-space:nowrap; vertical-align:middle;">
+              <span style="display:inline-block; width:11pt; height:8pt; background-color:${escapeHtml(cat.color)}; border:1pt solid #000000; mso-shading:${escapeHtml(cat.color)};">&nbsp;&nbsp;&nbsp;</span>
+              <span style="font-size:${legendFontPt}; font-weight:bold; color:#000000; mso-fareast-font-family:Calibri;">&nbsp;${escapeHtml(cat.label)}</span>
+            </td>
+          `);
+
+          // Group legend items into rows of 4
+          let legendRowsHtml = '';
+          for (let i = 0; i < legendCells.length; i += 4) {
+            legendRowsHtml += '<tr>' + legendCells.slice(i, i + 4).join('') + '</tr>';
+          }
+
+          // Build Month Header Row
+          let monthRowHtml = '<tr>';
+          for (let m = 0; m < 12; m++) {
+            const monthName = escapeHtml(state.texts.months[m] || DEFAULT_MONTHS[m]);
+            monthRowHtml += `<th colspan="3" style="border-top:1.5pt solid #000000; border-bottom:1pt solid #000000; border-left:1.5pt solid #000000; border-right:1.5pt solid #000000; background-color:#f8fafc; font-size:${monthFontPt}; font-weight:bold; text-align:center; padding:2pt 1pt; color:#000000;">${monthName}</th>`;
+          }
+          monthRowHtml += '</tr>';
+
+          // Build Vertical Sub-Header Row (Date | Day | Schedule) using Word's native mso-rotate:90
+          let subHeaderRowHtml = '<tr>';
+          for (let m = 0; m < 12; m++) {
+            subHeaderRowHtml += `
+              <th style="height:${subHeaderHeight}; border-left:1.5pt solid #000000; border-right:0.5pt solid #222222; border-bottom:1.5pt solid #000000; background-color:#f1f5f9; font-size:${subHeaderFontPt}; font-weight:bold; text-align:center; vertical-align:middle; mso-rotate:90; writing-mode:tb-rl; padding:1pt 0; color:#000000;">${escapeHtml(state.texts.colDate)}</th>
+              <th style="height:${subHeaderHeight}; border-left:0.5pt solid #222222; border-right:0.5pt solid #222222; border-bottom:1.5pt solid #000000; background-color:#f1f5f9; font-size:${subHeaderFontPt}; font-weight:bold; text-align:center; vertical-align:middle; mso-rotate:90; writing-mode:tb-rl; padding:1pt 0; color:#000000;">${escapeHtml(state.texts.colDay)}</th>
+              <th style="height:${subHeaderHeight}; border-left:0.5pt solid #222222; border-right:1.5pt solid #000000; border-bottom:1.5pt solid #000000; background-color:#f1f5f9; font-size:${subHeaderFontPt}; font-weight:bold; text-align:center; vertical-align:middle; mso-rotate:90; writing-mode:tb-rl; padding:1pt 0; color:#000000;">${escapeHtml(state.texts.colSched)}</th>
+            `;
+          }
+          subHeaderRowHtml += '</tr>';
+
+          // Build 31 Date Rows
+          let bodyRowsHtml = '';
+          for (let day = 1; day <= 31; day++) {
+            bodyRowsHtml += `<tr style="height:${cellHeight};">`;
+            for (let m = 0; m < 12; m++) {
+              const daysInMonth = getDaysInMonth(m);
+              const isValidDay = day <= daysInMonth;
+              const bottomBorder = day === 31 ? '1.5pt solid #000000' : '0.5pt solid #222222';
+
+              if (isValidDay) {
+                const dateObj = new Date(YEAR, m, day);
+                const weekdayName = WEEKDAYS[dateObj.getDay()];
+                const code = (state.schedule[m] && state.schedule[m][day]) || '';
+                const hex = getCategoryHex(code);
+
+                bodyRowsHtml += `
+                  <td style="width:1.75%; border-left:1.5pt solid #000000; border-right:0.5pt solid #222222; border-bottom:${bottomBorder}; font-size:${cellFontPt}; font-weight:bold; text-align:center; vertical-align:middle; padding:0 1pt; color:#000000;">${day}</td>
+                  <td style="width:4.55%; border-left:0.5pt solid #222222; border-right:0.5pt solid #222222; border-bottom:${bottomBorder}; font-size:${cellFontPt}; text-align:left; vertical-align:middle; padding:0 1pt 0 2pt; color:#111111; white-space:nowrap;">${weekdayName}</td>
+                  <td style="width:2.03%; border-left:0.5pt solid #222222; border-right:1.5pt solid #000000; border-bottom:${bottomBorder}; background-color:${hex}; mso-shading:${hex}; padding:0;">&nbsp;</td>
+                `;
+              } else {
+                bodyRowsHtml += `
+                  <td style="width:1.75%; border-left:1.5pt solid #000000; border-right:0.5pt solid #222222; border-bottom:${bottomBorder}; background-color:#eef2f6;">&nbsp;</td>
+                  <td style="width:4.55%; border-left:0.5pt solid #222222; border-right:0.5pt solid #222222; border-bottom:${bottomBorder}; background-color:#eef2f6;">&nbsp;</td>
+                  <td style="width:2.03%; border-left:0.5pt solid #222222; border-right:1.5pt solid #000000; border-bottom:${bottomBorder}; background-color:#eef2f6;">&nbsp;</td>
+                `;
+              }
+            }
+            bodyRowsHtml += '</tr>';
+          }
+
+          const wordHtml = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+  <meta charset="utf-8" />
+  <title>${escapeHtml(state.texts.titleMain)}</title>
+  <!--[if gte mso 9]>
+  <xml>
+    <w:WordDocument>
+      <w:View>Print</w:View>
+      <w:Zoom>100</w:Zoom>
+      <w:DoNotOptimizeForBrowser/>
+    </w:WordDocument>
+  </xml>
+  <![endif]-->
+  <style>
+    @page WordSection1 {
+      size: ${pageWidth} ${pageHeight};
+      mso-page-orientation: landscape;
+      margin: ${margin};
+      mso-header-margin: 0mm;
+      mso-footer-margin: 0mm;
+      mso-paper-source: 0;
+    }
+    div.WordSection1 {
+      page: WordSection1;
+    }
+    body {
+      font-family: Calibri, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #000000;
+    }
+    table {
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+<body>
+  <div class="WordSection1">
+    <!-- Title & Legend Header Table -->
+    <table style="width:100%; border:none; margin-bottom:4pt;">
+      <tr>
+        <td style="border:none; text-align:center; vertical-align:middle; padding:0 8pt;">
+          <div style="font-size:${titleFontPt}; font-weight:bold; color:#000000; line-height:1.15;">${escapeHtml(state.texts.titleMain)}</div>
+          <div style="font-size:${sub1FontPt}; font-weight:bold; color:#111111; line-height:1.2;">${escapeHtml(state.texts.titleSub1)}</div>
+          <div style="font-size:${sub2FontPt}; font-weight:bold; color:#222222; line-height:1.2;">${escapeHtml(state.texts.titleSub2)}</div>
+        </td>
+        <td style="border:1.5pt solid #000000; padding:3pt 5pt; vertical-align:middle; width:1%; white-space:nowrap;">
+          <table style="border:none;">
+            ${legendRowsHtml}
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <!-- 36-Column Academic Calendar Grid -->
+    <table style="width:100%; table-layout:fixed; border-collapse:collapse; border:1.5pt solid #000000;">
+      ${monthRowHtml}
+      ${subHeaderRowHtml}
+      ${bodyRowsHtml}
+    </table>
+  </div>
+</body>
+</html>`;
+
+          const blob = new Blob(['\ufeff', wordHtml], {
+            type: 'application/msword;charset=utf-8'
+          });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `Academic_Calendar_2026_${state.pageSize}_Landscape.doc`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+
+          showToast(`Microsoft Word (.doc) downloaded (${state.pageSize} Landscape)! Open in Word to print.`);
+        } catch (err) {
+          console.error('Word export error:', err);
+          showToast('Could not export Word document. Please try again.');
+        }
+      }
+
+      function bindEvents() {
+        // Drag & Click painting
         tbodyEl.addEventListener('mousedown', (e) => {
           const cell = e.target.closest('.cell-sched');
           if (!cell) return;
@@ -876,41 +1215,137 @@
           if (!cell) return;
           paintCell(cell, activeBrushCode);
         }, { passive: true });
-      }
 
-      /**
-       * Binds toolbar buttons: Brush Palette, Reset, Download HTML, Print / Save as PDF.
-       */
-      function bindToolbarEvents() {
-        const paletteBtns = document.querySelectorAll('.palette-btn');
-        paletteBtns.forEach((btn) => {
-          btn.addEventListener('click', () => {
-            paletteBtns.forEach((b) => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeBrushCode = btn.dataset.code || '';
-          });
+        // Eraser button
+        document.getElementById('btnEraser').addEventListener('click', () => {
+          selectBrush('');
         });
 
+        // Add Custom Color Category
+        document.getElementById('btnAddCategory').addEventListener('click', () => {
+          const newId = 'CAT_' + Date.now().toString(36);
+          const paletteSamples = ['#06b6d4', '#ec4899', '#f59e0b', '#10b981', '#6366f1', '#8b5cf6'];
+          const pickColor = paletteSamples[state.categories.length % paletteSamples.length];
+          state.categories.push({
+            id: newId,
+            label: 'New Category',
+            color: pickColor
+          });
+          activeBrushCode = newId;
+          saveState();
+          renderPaletteAndLegend();
+          showToast('Added new color category! Click its swatch or name to customize.');
+        });
+
+        // Page Size Switcher
+        document.getElementById('btnSizeA3').addEventListener('click', () => {
+          applyPageSize('A3');
+          showToast('Print & Word layout set to A3 Landscape.');
+        });
+        document.getElementById('btnSizeA4').addEventListener('click', () => {
+          applyPageSize('A4');
+          showToast('Print & Word layout set to A4 Landscape.');
+        });
+
+        // Inline Heading Edits
+        elTitleMain.addEventListener('input', () => {
+          state.texts.titleMain = elTitleMain.textContent.trim();
+          inputTitleMain.value = state.texts.titleMain;
+          saveState();
+        });
+        elTitleSub1.addEventListener('input', () => {
+          state.texts.titleSub1 = elTitleSub1.textContent.trim();
+          inputTitleSub1.value = state.texts.titleSub1;
+          saveState();
+        });
+        elTitleSub2.addEventListener('input', () => {
+          state.texts.titleSub2 = elTitleSub2.textContent.trim();
+          inputTitleSub2.value = state.texts.titleSub2;
+          saveState();
+        });
+
+        // Edit Text Drawer Controls
+        const textDrawer = document.getElementById('textDrawer');
+        document.getElementById('btnToggleTextDrawer').addEventListener('click', () => {
+          textDrawer.classList.toggle('hidden');
+        });
+        document.getElementById('btnCloseTextDrawer').addEventListener('click', () => {
+          textDrawer.classList.add('hidden');
+        });
+
+        inputTitleMain.addEventListener('input', () => {
+          state.texts.titleMain = inputTitleMain.value;
+          elTitleMain.textContent = state.texts.titleMain;
+          saveState();
+        });
+        inputTitleSub1.addEventListener('input', () => {
+          state.texts.titleSub1 = inputTitleSub1.value;
+          elTitleSub1.textContent = state.texts.titleSub1;
+          saveState();
+        });
+        inputTitleSub2.addEventListener('input', () => {
+          state.texts.titleSub2 = inputTitleSub2.value;
+          elTitleSub2.textContent = state.texts.titleSub2;
+          saveState();
+        });
+        inputColDate.addEventListener('input', () => {
+          state.texts.colDate = inputColDate.value || 'Date';
+          saveState();
+          renderCalendar();
+        });
+        inputColDay.addEventListener('input', () => {
+          state.texts.colDay = inputColDay.value || 'Day';
+          saveState();
+          renderCalendar();
+        });
+        inputColSched.addEventListener('input', () => {
+          state.texts.colSched = inputColSched.value || 'Schedule';
+          saveState();
+          renderCalendar();
+        });
+
+        // Reset Modal
+        const resetModal = document.getElementById('resetModal');
+        document.getElementById('btnReset').addEventListener('click', () => {
+          resetModal.classList.remove('hidden');
+        });
+        document.getElementById('btnCancelReset').addEventListener('click', () => {
+          resetModal.classList.add('hidden');
+        });
+        document.getElementById('btnConfirmReset').addEventListener('click', () => {
+          state = {
+            categories: JSON.parse(JSON.stringify(DEFAULT_CATEGORIES)),
+            texts: JSON.parse(JSON.stringify(DEFAULT_TEXTS)),
+            schedule: JSON.parse(JSON.stringify(DEFAULT_SCHEDULE)),
+            pageSize: state.pageSize
+          };
+          activeBrushCode = state.categories[0].id;
+          saveState();
+          syncTextsToUI();
+          renderPaletteAndLegend();
+          renderCalendar();
+          resetModal.classList.add('hidden');
+          showToast('Calendar restored to default 2026 schedule.');
+        });
+
+        // Export to Microsoft Word (.doc)
+        document.getElementById('btnExportWord').addEventListener('click', exportToWordDoc);
+
+        // Print / Save as PDF
         document.getElementById('btnPrint').addEventListener('click', () => {
           window.print();
         });
 
-        document.getElementById('btnReset').addEventListener('click', () => {
-          currentSchedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
-          renderCalendar();
-          showToast('Calendar colors reset to default 2026 schedule.');
-        });
-
-        document.getElementById('btnDownload').addEventListener('click', () => {
+        // Download Standalone HTML with embedded state
+        document.getElementById('btnDownloadHtml').addEventListener('click', () => {
           try {
             const clone = document.documentElement.cloneNode(true);
-
-            const oldSaved = clone.querySelector('#savedScheduleState');
+            const oldSaved = clone.querySelector('#savedAppStateScript');
             if (oldSaved) oldSaved.remove();
 
             const savedScript = document.createElement('script');
-            savedScript.id = 'savedScheduleState';
-            savedScript.textContent = 'window.__SAVED_SCHEDULE__ = ' + JSON.stringify(currentSchedule) + ';';
+            savedScript.id = 'savedAppStateScript';
+            savedScript.textContent = 'window.__SAVED_APP_STATE__ = ' + JSON.stringify(state) + ';';
 
             const mainScript = clone.querySelector('#calendarAppScript');
             if (mainScript && mainScript.parentNode) {
@@ -935,15 +1370,17 @@
             showToast('Standalone HTML calendar downloaded!');
           } catch (err) {
             console.error('Download failed:', err);
-            showToast('Could not download file. Please use Print / Save as PDF.');
+            showToast('Could not download HTML file.');
           }
         });
       }
 
-      // Initialize application
+      // Initialize App
+      applyPageSize(state.pageSize || 'A3');
+      syncTextsToUI();
+      renderPaletteAndLegend();
       renderCalendar();
-      bindPaintingEvents();
-      bindToolbarEvents();
+      bindEvents();
     })();
   </script>
 </body>
