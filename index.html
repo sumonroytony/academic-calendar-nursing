@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Academic Calendar - 2026 | Nursing and Midwifery College, Gopalganj</title>
+  <title>Academic Calendar - 2026 | Nursing and Midwifery College, Gopalganj.</title>
 
-  <!-- Tailwind CSS for clean toolbar & responsive layout chrome -->
+  <!-- Tailwind CSS for clean toolbar & responsive chrome -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Inter Font for crisp, legible typography on screen and print -->
@@ -15,17 +15,17 @@
 
   <style>
     /* ==========================================================================
-       BASE & TYPOGRAPHY
+       COLOR TOKENS & BASE RESET
        ========================================================================== */
     :root {
-      --color-Y: #F4E32E; /* Theory Class */
-      --color-C: #A89F5D; /* Clinical Practice */
-      --color-P: #A891C8; /* LP */
-      --color-R: #EF4E33; /* Practicum */
-      --color-W: #C94A60; /* Weekly Holiday */
-      --color-G: #3EB549; /* School Leave */
-      --color-B: #5A74AF; /* Exam */
-      --color-NONE: #FFFFFF;
+      --color-Y: #f2e03a; /* Theory class */
+      --color-C: #4caf50; /* Clinical practice */
+      --color-P: #8c88d8; /* LP */
+      --color-R: #f05a3a; /* Practicum */
+      --color-W: #d94b5b; /* Weekly Holiday */
+      --color-G: #a6d854; /* Special Leave */
+      --color-B: #5c7cfa; /* Exam */
+      --color-NONE: #ffffff;
     }
 
     * {
@@ -55,8 +55,8 @@
     .calendar-sheet {
       background: #ffffff;
       width: 100%;
-      min-width: 1280px;
-      max-width: 1600px;
+      min-width: 1320px;
+      max-width: 1640px;
       margin: 0 auto;
       padding: 16px 18px 18px 18px;
       border-radius: 10px;
@@ -65,7 +65,7 @@
     }
 
     /* ==========================================================================
-       HEADER & LEGEND
+       HEADER & LEGEND BOX
        ========================================================================== */
     .sheet-header {
       display: flex;
@@ -82,31 +82,31 @@
     }
 
     .title-main {
-      font-size: 20px;
+      font-size: 21px;
       font-weight: 800;
       letter-spacing: 0.02em;
-      color: #111111;
+      color: #000000;
       line-height: 1.2;
       margin: 0;
     }
 
     .title-sub1 {
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
-      color: #1e293b;
+      color: #111827;
       line-height: 1.3;
       margin: 2px 0 0 0;
     }
 
     .title-sub2 {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 600;
-      color: #334155;
+      color: #1f2937;
       line-height: 1.3;
       margin: 1px 0 0 0;
     }
 
-    /* Subtle visual cue for contenteditable text on screen only */
+    /* Editable text highlight on screen only */
     [contenteditable="true"] {
       outline: none;
       border-radius: 4px;
@@ -114,17 +114,17 @@
     }
 
     [contenteditable="true"]:hover {
-      background-color: rgba(59, 130, 246, 0.07);
+      background-color: rgba(59, 130, 246, 0.08);
     }
 
     [contenteditable="true"]:focus {
-      background-color: rgba(59, 130, 246, 0.12);
+      background-color: rgba(59, 130, 246, 0.14);
       box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35);
     }
 
-    /* Legend Box (2-row compact grid) */
+    /* Legend Box */
     .legend-box {
-      border: 2px solid #111111;
+      border: 1.8px solid #000000;
       background: #ffffff;
       padding: 6px 10px;
       flex-shrink: 0;
@@ -167,50 +167,74 @@
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
-      border: 2px solid #111111;
+      border: 1.8px solid #000000;
       user-select: none;
     }
 
     .calendar-table th,
     .calendar-table td {
-      border: 1px solid #333333;
+      border: 1px solid #222222;
       padding: 1px 2px;
       text-align: center;
       vertical-align: middle;
-      overflow: hidden;
       white-space: nowrap;
     }
 
+    .calendar-table td {
+      overflow: hidden;
+    }
+
     /* Month header row */
-    .month-header {
+    tr.month-row th {
       font-size: 11px;
       font-weight: 800;
       background-color: #f8fafc;
-      color: #111111;
-      padding: 4px 2px !important;
+      color: #000000;
+      padding: 5px 2px;
       letter-spacing: 0.01em;
-      border-bottom: 1.5px solid #111111 !important;
+      border-bottom: 1.5px solid #000000;
+      overflow: hidden;
     }
 
-    /* Sub-header row (Date | Day | Schedule) */
-    .sub-header {
-      font-size: 8.5px;
-      font-weight: 700;
+    /* ==========================================================================
+       CRITICAL FIX: VERTICAL SUB-HEADERS (Date | Day | Schedule)
+       100% visible with generous breathing room and zero clipping
+       ========================================================================== */
+    tr.sub-header th {
+      height: 62px;
       background-color: #f1f5f9;
-      color: #1e293b;
-      padding: 3px 1px !important;
-      border-bottom: 2px solid #111111 !important;
+      color: #111827;
+      padding: 4px 0 !important;
+      vertical-align: middle;
+      text-align: center;
+      white-space: nowrap;
+      overflow: visible !important;
+      border-bottom: 1.8px solid #000000;
     }
 
-    /* Column width proportions across 12 months (each month = 8.3333%) */
+    .v-text {
+      display: inline-block;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+      line-height: 1;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: #111111;
+      vertical-align: middle;
+    }
+
+    /* Column proportions across 12 months (each month = 8.3333%)
+       Date (~16-22px), Day (~44-58px), Schedule (~18-26px) */
     .col-date {
-      width: 1.65%;
+      width: 1.75%;
     }
     .col-day {
-      width: 4.35%;
+      width: 4.55%;
     }
     .col-sched {
-      width: 2.3333%;
+      width: 2.0333%;
     }
 
     /* Body cell styling */
@@ -242,20 +266,20 @@
     }
 
     .cell-empty {
-      background-color: #f8fafc;
+      background-color: #eef2f6;
       cursor: default;
     }
 
-    /* Thicker 2px solid #111 vertical borders separating each month block */
+    /* Thicker 1.8px solid #000 vertical borders separating each month */
     .month-start {
-      border-left: 2px solid #111111 !important;
+      border-left: 1.8px solid #000000 !important;
     }
 
     .month-end {
-      border-right: 2px solid #111111 !important;
+      border-right: 1.8px solid #000000 !important;
     }
 
-    /* Palette color classes for Schedule cells (Strictly solid fill, no text) */
+    /* Solid background color classes for Schedule cells (Strictly no text) */
     .bg-code-Y { background-color: var(--color-Y) !important; }
     .bg-code-C { background-color: var(--color-C) !important; }
     .bg-code-P { background-color: var(--color-P) !important; }
@@ -273,11 +297,11 @@
     }
 
     /* ==========================================================================
-       PRINT STYLES (@media print) — SINGLE LANDSCAPE PAGE (A4 / A3)
+       PRINT STYLES (@media print) — SINGLE LANDSCAPE PAGE (A3 / A4)
        ========================================================================== */
     @page {
-      size: landscape;
-      margin: 5mm;
+      size: A3 landscape;
+      margin: 6mm;
     }
 
     @media print {
@@ -290,6 +314,7 @@
         overflow: hidden !important;
       }
 
+      .toolbar,
       .no-print {
         display: none !important;
       }
@@ -324,34 +349,34 @@
       }
 
       .title-main {
-        font-size: 14pt !important;
+        font-size: 16pt !important;
       }
 
       .title-sub1 {
-        font-size: 9.5pt !important;
+        font-size: 10.5pt !important;
       }
 
       .title-sub2 {
-        font-size: 8.5pt !important;
+        font-size: 9.5pt !important;
       }
 
       .legend-box {
-        padding: 3px 6px !important;
+        padding: 3px 7px !important;
         border-width: 1.5px !important;
       }
 
       .legend-grid {
-        column-gap: 8px !important;
-        row-gap: 2px !important;
+        column-gap: 10px !important;
+        row-gap: 3px !important;
       }
 
       .legend-swatch {
-        width: 13px !important;
-        height: 9px !important;
+        width: 14px !important;
+        height: 10px !important;
       }
 
       .legend-label {
-        font-size: 7.2pt !important;
+        font-size: 8pt !important;
       }
 
       [contenteditable="true"] {
@@ -371,24 +396,31 @@
         break-inside: avoid !important;
       }
 
-      .month-header {
-        font-size: 8pt !important;
-        padding: 2px 1px !important;
+      tr.month-row th {
+        font-size: 8.5pt !important;
+        padding: 2.5px 1px !important;
       }
 
-      .sub-header {
-        font-size: 6pt !important;
-        padding: 1.5px 0.5px !important;
+      /* Print-safe vertical sub-header dimensions */
+      tr.sub-header th {
+        height: 15mm !important;
+        padding: 2px 0 !important;
+        overflow: visible !important;
+      }
+
+      .v-text {
+        font-size: 7.5pt !important;
+        font-weight: 700 !important;
       }
 
       .cell-date {
-        font-size: 6.5pt !important;
+        font-size: 7pt !important;
         height: auto !important;
         padding: 0.5px 1px !important;
       }
 
       .cell-day {
-        font-size: 6.1pt !important;
+        font-size: 6.8pt !important;
         padding: 0.5px 1px 0.5px 2px !important;
       }
 
@@ -404,74 +436,74 @@
   <!-- ========================================================================
        INTERACTIVE TOOLBAR (HIDDEN WHEN PRINTING)
        ======================================================================== -->
-  <header class="no-print sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
-    <div class="max-w-[1600px] mx-auto px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-3">
+  <header class="toolbar no-print sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
+    <div class="max-w-[1640px] mx-auto px-3 sm:px-5 py-2.5 flex flex-wrap items-center justify-between gap-3">
 
-      <!-- Left: Brand & Quick Hint -->
+      <!-- Left: Brand & Instructions -->
       <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center font-bold text-sm shadow-sm">
           26
         </div>
         <div>
           <h2 class="text-sm font-bold text-slate-900 leading-tight">Academic Calendar 2026</h2>
-          <p class="text-[11px] text-slate-500 leading-tight">Click or drag any Schedule cell to paint &bull; Click titles/legend to edit text</p>
+          <p class="text-[11px] text-slate-500 leading-tight">Click or drag any Schedule cell to paint &bull; Click titles or legend to edit</p>
         </div>
       </div>
 
-      <!-- Center: Interactive Color Palette Selector -->
+      <!-- Center: Brush Palette -->
       <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200" role="group" aria-label="Color Palette">
         <span class="text-[11px] font-semibold text-slate-600 px-1.5 hidden sm:inline">Brush:</span>
 
-        <button type="button" data-code="Y" title="Theory Class (Yellow)"
+        <button type="button" data-code="Y" title="Theory class (Yellow)"
           class="palette-btn active flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#F4E32E"></span>
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#f2e03a"></span>
           <span class="hidden md:inline">Theory</span>
         </button>
 
-        <button type="button" data-code="C" title="Clinical Practice (Olive)"
+        <button type="button" data-code="C" title="Clinical practice (Bright Green)"
           class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#A89F5D"></span>
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#4caf50"></span>
           <span class="hidden md:inline">Clinical</span>
         </button>
 
-        <button type="button" data-code="P" title="LP (Lavender)"
+        <button type="button" data-code="P" title="LP (Soft Purple/Blue)"
           class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#A891C8"></span>
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#8c88d8"></span>
           <span class="hidden md:inline">LP</span>
         </button>
 
         <button type="button" data-code="R" title="Practicum (Orange-Red)"
           class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#EF4E33"></span>
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#f05a3a"></span>
           <span class="hidden md:inline">Practicum</span>
         </button>
 
-        <button type="button" data-code="W" title="Weekly Holiday (Crimson/Rose)"
+        <button type="button" data-code="W" title="Weekly Holiday (Red/Crimson)"
           class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#C94A60"></span>
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#d94b5b"></span>
           <span class="hidden md:inline">Holiday</span>
         </button>
 
-        <button type="button" data-code="G" title="School Leave (Bright Green)"
+        <button type="button" data-code="G" title="Special Leave (Lime Green)"
           class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#3EB549"></span>
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#a6d854"></span>
           <span class="hidden md:inline">Leave</span>
         </button>
 
-        <button type="button" data-code="B" title="Exam (Slate Blue)"
+        <button type="button" data-code="B" title="Exam (Dark Teal/Blue)"
           class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
-          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#5A74AF"></span>
+          <span class="w-3.5 h-3.5 rounded-sm border border-slate-700 inline-block" style="background:#5c7cfa"></span>
           <span class="hidden md:inline">Exam</span>
         </button>
 
-        <button type="button" data-code="" title="Clear / White"
+        <button type="button" data-code="" title="Eraser (White / Clear)"
           class="palette-btn flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white border border-slate-300 text-xs font-medium text-slate-800 hover:bg-slate-50 transition">
           <span class="w-3.5 h-3.5 rounded-sm border border-slate-400 bg-white inline-block"></span>
-          <span class="hidden md:inline">Clear</span>
+          <span class="hidden md:inline">Eraser</span>
         </button>
       </div>
 
-      <!-- Right: Action Buttons -->
+      <!-- Right: Actions -->
       <div class="flex items-center gap-2">
         <button id="btnReset" type="button"
           class="px-3 py-2 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 transition">
@@ -497,7 +529,7 @@
     </div>
   </header>
 
-  <!-- Toast Message Box (Non-blocking feedback, never uses alert()) -->
+  <!-- Non-blocking toast notification -->
   <div id="toast" class="no-print fixed bottom-5 right-5 z-50 hidden bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg border border-slate-700 transition-opacity">
   </div>
 
@@ -507,44 +539,42 @@
   <main class="sheet-viewport flex-1">
     <section id="calendarSheet" class="calendar-sheet">
 
-      <!-- Sheet Header: Title Block + Top-Right Legend Box -->
+      <!-- Sheet Header: Editable Title Block + Compact Color Legend Box -->
       <div class="sheet-header">
-        <!-- Title Block -->
         <div class="title-block">
           <h1 class="title-main" contenteditable="true" spellcheck="false">Academic Calendar - 2026</h1>
           <p class="title-sub1" contenteditable="true" spellcheck="false">3rd Year, Diploma in Midwifery</p>
-          <p class="title-sub2" contenteditable="true" spellcheck="false">Nursing and Midwifery College, Gopalganj</p>
+          <p class="title-sub2" contenteditable="true" spellcheck="false">Nursing and Midwifery College, Gopalganj.</p>
         </div>
 
-        <!-- Legend Box (Compact 2-row grid with 7 swatches) -->
         <div class="legend-box" aria-label="Color Legend">
           <div class="legend-grid">
             <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #F4E32E;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">Theory Class</span>
+              <span class="legend-swatch" style="background-color: #f2e03a;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">Theory class</span>
             </div>
             <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #A89F5D;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">Clinical Practice</span>
+              <span class="legend-swatch" style="background-color: #4caf50;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">Clinical practice</span>
             </div>
             <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #A891C8;"></span>
+              <span class="legend-swatch" style="background-color: #8c88d8;"></span>
               <span class="legend-label" contenteditable="true" spellcheck="false">LP</span>
             </div>
             <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #EF4E33;"></span>
+              <span class="legend-swatch" style="background-color: #f05a3a;"></span>
               <span class="legend-label" contenteditable="true" spellcheck="false">Practicum</span>
             </div>
             <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #C94A60;"></span>
+              <span class="legend-swatch" style="background-color: #d94b5b;"></span>
               <span class="legend-label" contenteditable="true" spellcheck="false">Weekly Holiday</span>
             </div>
             <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #3EB549;"></span>
-              <span class="legend-label" contenteditable="true" spellcheck="false">School Leave</span>
+              <span class="legend-swatch" style="background-color: #a6d854;"></span>
+              <span class="legend-label" contenteditable="true" spellcheck="false">Special Leave</span>
             </div>
             <div class="legend-item">
-              <span class="legend-swatch" style="background-color: #5A74AF;"></span>
+              <span class="legend-swatch" style="background-color: #5c7cfa;"></span>
               <span class="legend-label" contenteditable="true" spellcheck="false">Exam</span>
             </div>
           </div>
@@ -578,73 +608,81 @@
       ];
 
       /**
-       * Exact pre-filled 2026 schedule color map.
-       * Codes: Y=Yellow, C=Olive, P=Purple, R=Orange-Red, W=Crimson/Rose, G=Green, B=Blue, ''=White/Blank
+       * Pre-populated 2026 Academic Calendar schedule color map.
+       * Codes:
+       *   Y = Theory class (#f2e03a)
+       *   C = Clinical practice (#4caf50)
+       *   P = LP (#8c88d8)
+       *   R = Practicum (#f05a3a)
+       *   W = Weekly Holiday (#d94b5b) — All Fridays in 2026
+       *   G = Special Leave (#a6d854)
+       *   B = Exam (#5c7cfa)
+       *   '' = White / Blank
        */
       const DEFAULT_SCHEDULE = {
-        0: { // January (31)
+        0: { // January (31) — Theory class + Fridays Holiday
           1:'Y', 2:'W', 3:'Y', 4:'Y', 5:'Y', 6:'Y', 7:'Y', 8:'Y', 9:'W', 10:'Y',
           11:'Y', 12:'Y', 13:'Y', 14:'Y', 15:'Y', 16:'W', 17:'Y', 18:'Y', 19:'Y', 20:'Y',
           21:'Y', 22:'Y', 23:'W', 24:'Y', 25:'Y', 26:'Y', 27:'Y', 28:'Y', 29:'Y', 30:'W', 31:'Y'
         },
-        1: { // February (28)
+        1: { // February (28) — Theory class + Fridays Holiday
           1:'Y', 2:'Y', 3:'Y', 4:'Y', 5:'Y', 6:'W', 7:'Y', 8:'Y', 9:'Y', 10:'Y',
           11:'Y', 12:'Y', 13:'W', 14:'Y', 15:'Y', 16:'Y', 17:'Y', 18:'Y', 19:'Y', 20:'W',
           21:'Y', 22:'Y', 23:'Y', 24:'Y', 25:'Y', 26:'Y', 27:'W', 28:'Y'
         },
-        2: { // March (31)
-          1:'C', 2:'C', 3:'C', 4:'C', 5:'C', 6:'W', 7:'C', 8:'C', 9:'C', 10:'C',
-          11:'C', 12:'C', 13:'W', 14:'G', 15:'G', 16:'C', 17:'C', 18:'C', 19:'C', 20:'W',
-          21:'G', 22:'G', 23:'G', 24:'G', 25:'G', 26:'G', 27:'W', 28:'C', 29:'C', 30:'C', 31:'C'
+        2: { // March (31) — Early Theory/Special Leave + Clinical practice in late March
+          1:'Y', 2:'Y', 3:'Y', 4:'Y', 5:'Y', 6:'W', 7:'Y', 8:'Y', 9:'Y', 10:'Y',
+          11:'Y', 12:'Y', 13:'W', 14:'G', 15:'G', 16:'C', 17:'C', 18:'C', 19:'C', 20:'W',
+          21:'C', 22:'C', 23:'C', 24:'C', 25:'C', 26:'C', 27:'W', 28:'C', 29:'C', 30:'C', 31:'C'
         },
-        3: { // April (30)
-          1:'C', 2:'C', 3:'W', 4:'C', 5:'C', 6:'C', 7:'C', 8:'C', 9:'C', 10:'W',
-          11:'C', 12:'C', 13:'C', 14:'C', 15:'C', 16:'C', 17:'W', 18:'C', 19:'C', 20:'C',
-          21:'C', 22:'C', 23:'C', 24:'W', 25:'C', 26:'C', 27:'C', 28:'C', 29:'C', 30:'C'
+        3: { // April (30) — Lime/Special Leave & Clinical blocks
+          1:'G', 2:'G', 3:'W', 4:'G', 5:'G', 6:'G', 7:'G', 8:'G', 9:'G', 10:'W',
+          11:'G', 12:'G', 13:'G', 14:'G', 15:'G', 16:'G', 17:'W', 18:'G', 19:'G', 20:'G',
+          21:'G', 22:'G', 23:'G', 24:'W', 25:'G', 26:'G', 27:'G', 28:'G', 29:'G', 30:'G'
         },
-        4: { // May (31)
+        4: { // May (31) — Theory class + Clinical practice in late May
           1:'W', 2:'Y', 3:'Y', 4:'Y', 5:'Y', 6:'Y', 7:'Y', 8:'W', 9:'Y', 10:'Y',
           11:'Y', 12:'Y', 13:'Y', 14:'Y', 15:'W', 16:'Y', 17:'Y', 18:'Y', 19:'Y', 20:'Y',
-          21:'Y', 22:'W', 23:'G', 24:'G', 25:'G', 26:'G', 27:'G', 28:'G', 29:'W', 30:'Y', 31:''
+          21:'Y', 22:'W', 23:'C', 24:'C', 25:'C', 26:'C', 27:'C', 28:'C', 29:'W', 30:'Y', 31:'Y'
         },
-        5: { // June (30)
-          1:'C', 2:'C', 3:'C', 4:'C', 5:'W', 6:'C', 7:'C', 8:'C', 9:'C', 10:'C',
-          11:'C', 12:'W', 13:'C', 14:'C', 15:'C', 16:'C', 17:'C', 18:'C', 19:'W', 20:'C',
-          21:'C', 22:'C', 23:'C', 24:'C', 25:'C', 26:'W', 27:'C', 28:'C', 29:'C', 30:'C'
+        5: { // June (30) — Clinical practice & Special Leave / Theory mix
+          1:'G', 2:'G', 3:'G', 4:'G', 5:'W', 6:'G', 7:'G', 8:'G', 9:'G', 10:'G',
+          11:'G', 12:'W', 13:'C', 14:'C', 15:'C', 16:'C', 17:'C', 18:'C', 19:'W', 20:'C',
+          21:'C', 22:'C', 23:'C', 24:'C', 25:'C', 26:'W', 27:'G', 28:'G', 29:'G', 30:'G'
         },
-        6: { // July (31)
-          1:'C', 2:'C', 3:'W', 4:'C', 5:'C', 6:'C', 7:'C', 8:'C', 9:'C', 10:'W',
+        6: { // July (31) — Theory / Special Leave + LP & Exam blocks
+          1:'Y', 2:'Y', 3:'W', 4:'Y', 5:'Y', 6:'Y', 7:'Y', 8:'Y', 9:'Y', 10:'W',
           11:'P', 12:'P', 13:'P', 14:'P', 15:'P', 16:'P', 17:'W', 18:'B', 19:'B', 20:'B',
-          21:'B', 22:'B', 23:'B', 24:'W', 25:'', 26:'', 27:'', 28:'', 29:'', 30:'', 31:'W'
+          21:'B', 22:'B', 23:'B', 24:'W', 25:'G', 26:'G', 27:'G', 28:'G', 29:'G', 30:'G', 31:'W'
         },
-        7: { // August (31)
-          1:'C', 2:'C', 3:'C', 4:'C', 5:'C', 6:'C', 7:'W', 8:'C', 9:'C', 10:'C',
-          11:'C', 12:'C', 13:'C', 14:'W', 15:'R', 16:'R', 17:'R', 18:'R', 19:'R', 20:'R',
+        7: { // August (31) — Clinical/Leave early Aug + Practicum (Orange-Red) Aug 15-30
+          1:'G', 2:'G', 3:'G', 4:'G', 5:'G', 6:'G', 7:'W', 8:'G', 9:'G', 10:'G',
+          11:'G', 12:'G', 13:'G', 14:'W', 15:'R', 16:'R', 17:'R', 18:'R', 19:'R', 20:'R',
           21:'W', 22:'R', 23:'R', 24:'R', 25:'R', 26:'R', 27:'R', 28:'W', 29:'R', 30:'R', 31:''
         },
-        8: { // September (30)
-          1:'C', 2:'C', 3:'C', 4:'W', 5:'C', 6:'C', 7:'C', 8:'C', 9:'C', 10:'C',
+        8: { // September (30) — LP/Exam & Theory blocks
+          1:'P', 2:'P', 3:'P', 4:'W', 5:'P', 6:'P', 7:'P', 8:'P', 9:'P', 10:'P',
           11:'W', 12:'Y', 13:'Y', 14:'Y', 15:'Y', 16:'Y', 17:'Y', 18:'W', 19:'Y', 20:'Y',
           21:'Y', 22:'Y', 23:'Y', 24:'Y', 25:'W', 26:'Y', 27:'Y', 28:'Y', 29:'Y', 30:'Y'
         },
-        9: { // October (31)
+        9: { // October (31) — LP, Exam, and Clinical practice mid-Oct
           1:'P', 2:'W', 3:'P', 4:'P', 5:'P', 6:'P', 7:'P', 8:'P', 9:'W', 10:'B',
-          11:'B', 12:'B', 13:'B', 14:'B', 15:'B', 16:'W', 17:'G', 18:'G', 19:'G', 20:'G',
-          21:'G', 22:'G', 23:'W', 24:'B', 25:'B', 26:'B', 27:'B', 28:'B', 29:'B', 30:'W', 31:'W'
+          11:'B', 12:'B', 13:'B', 14:'B', 15:'B', 16:'W', 17:'C', 18:'C', 19:'C', 20:'C',
+          21:'C', 22:'C', 23:'W', 24:'B', 25:'B', 26:'B', 27:'B', 28:'B', 29:'B', 30:'W', 31:'B'
         },
-        10: { // November (30)
+        10: { // November (30) — Practicum (Orange-Red) Nov 1-19 + Exam late Nov
           1:'R', 2:'R', 3:'R', 4:'R', 5:'R', 6:'W', 7:'R', 8:'R', 9:'R', 10:'R',
           11:'R', 12:'R', 13:'W', 14:'R', 15:'R', 16:'R', 17:'R', 18:'R', 19:'R', 20:'W',
           21:'B', 22:'B', 23:'B', 24:'B', 25:'B', 26:'B', 27:'W', 28:'B', 29:'B', 30:'B'
         },
-        11: { // December (31)
+        11: { // December (31) — LP & Exam blocks
           1:'P', 2:'P', 3:'P', 4:'W', 5:'P', 6:'P', 7:'P', 8:'P', 9:'P', 10:'P',
           11:'W', 12:'P', 13:'P', 14:'P', 15:'P', 16:'P', 17:'P', 18:'W', 19:'P', 20:'P',
           21:'P', 22:'P', 23:'P', 24:'P', 25:'W', 26:'B', 27:'B', 28:'B', 29:'B', 30:'B', 31:'B'
         }
       };
 
-      // Runtime state (supports pre-embedded saved state when downloaded as standalone HTML)
+      // Runtime state (preserves saved edits in downloaded HTML copies)
       let currentSchedule = window.__SAVED_SCHEDULE__
         ? JSON.parse(JSON.stringify(window.__SAVED_SCHEDULE__))
         : JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
@@ -660,21 +698,21 @@
       const toastEl = document.getElementById('toast');
 
       /**
-       * Returns the number of days in a given month (0-indexed) of YEAR.
+       * Returns total number of days in a 0-indexed month for YEAR.
        */
       function getDaysInMonth(monthIdx) {
         return new Date(YEAR, monthIdx + 1, 0).getDate();
       }
 
       /**
-       * Returns the CSS class name for a schedule color code.
+       * Maps a schedule color code to its CSS background class.
        */
       function getColorClass(code) {
         return code ? 'bg-code-' + code : 'bg-code-NONE';
       }
 
       /**
-       * Shows a brief non-blocking toast message.
+       * Displays a brief non-blocking toast message.
        */
       function showToast(message) {
         if (!toastEl) return;
@@ -687,15 +725,29 @@
       }
 
       /**
-       * Applies a color code to a specific Schedule <td> cell.
-       * Strictly keeps the cell text empty (solid color fill only).
+       * Helper to build a vertically rotated sub-header <th> with an inner span
+       * so 'Date', 'Day', and 'Schedule' are 100% visible with zero clipping.
+       */
+      function createVerticalSubHeader(label, extraClass) {
+        const th = document.createElement('th');
+        if (extraClass) th.className = extraClass;
+
+        const span = document.createElement('span');
+        span.className = 'v-text';
+        span.textContent = label;
+
+        th.appendChild(span);
+        return th;
+      }
+
+      /**
+       * Paints a Schedule <td> cell with a solid color fill and strictly NO text.
        */
       function paintCell(td, code) {
         const m = Number(td.dataset.month);
         const d = Number(td.dataset.day);
         if (Number.isNaN(m) || Number.isNaN(d)) return;
 
-        // Remove any previous color class
         td.classList.remove(
           'bg-code-Y', 'bg-code-C', 'bg-code-P', 'bg-code-R',
           'bg-code-W', 'bg-code-G', 'bg-code-B', 'bg-code-NONE'
@@ -710,7 +762,7 @@
       }
 
       /**
-       * Builds the 36-column colgroup, 2-row header, and 31-row body dynamically.
+       * Generates the 36-column colgroup, 2-row header, and 31-row calendar body.
        */
       function renderCalendar() {
         // 1. Colgroup
@@ -727,33 +779,24 @@
           colgroupEl.appendChild(cSched);
         }
 
-        // 2. Table Head (Row 1: Month Names, Row 2: Date | Day | Schedule)
+        // 2. Table Head (Row 1: Month Names, Row 2: Vertical Date | Day | Schedule)
         theadEl.innerHTML = '';
         const trMonths = document.createElement('tr');
+        trMonths.className = 'month-row';
+
         const trSubs = document.createElement('tr');
+        trSubs.className = 'sub-header';
 
         for (let m = 0; m < 12; m++) {
           const thMonth = document.createElement('th');
           thMonth.colSpan = 3;
           thMonth.textContent = MONTHS[m];
-          thMonth.className = 'month-header month-start month-end';
+          thMonth.className = 'month-start month-end';
           trMonths.appendChild(thMonth);
 
-          const thDate = document.createElement('th');
-          thDate.textContent = 'Date';
-          thDate.className = 'sub-header month-start';
-
-          const thDay = document.createElement('th');
-          thDay.textContent = 'Day';
-          thDay.className = 'sub-header';
-
-          const thSched = document.createElement('th');
-          thSched.textContent = 'Schedule';
-          thSched.className = 'sub-header month-end';
-
-          trSubs.appendChild(thDate);
-          trSubs.appendChild(thDay);
-          trSubs.appendChild(thSched);
+          trSubs.appendChild(createVerticalSubHeader('Date', 'month-start'));
+          trSubs.appendChild(createVerticalSubHeader('Day', ''));
+          trSubs.appendChild(createVerticalSubHeader('Schedule', 'month-end'));
         }
 
         theadEl.appendChild(trMonths);
@@ -783,14 +826,14 @@
               tdDay.textContent = weekdayName;
               tdDay.className = 'cell-day';
 
-              // Schedule cell: solid background color ONLY, strictly no text
+              // Schedule cell: solid color block ONLY, strictly empty text
               tdSched.textContent = '';
               tdSched.className = 'cell-sched month-end ' + getColorClass(code);
               tdSched.dataset.month = String(m);
               tdSched.dataset.day = String(day);
               tdSched.dataset.code = code;
             } else {
-              // Invalid date for this month (e.g., Feb 29-31, Apr 31)
+              // Non-existent dates (e.g., Feb 29-31, Apr 31) shaded cleanly
               tdDate.className = 'cell-date cell-empty month-start';
               tdDay.className = 'cell-day cell-empty';
               tdSched.className = 'cell-empty month-end';
@@ -806,10 +849,9 @@
       }
 
       /**
-       * Sets up click & drag painting for mouse and touch devices.
+       * Binds click-and-drag painting for mouse and touch interactions.
        */
       function bindPaintingEvents() {
-        // Mouse painting
         tbodyEl.addEventListener('mousedown', (e) => {
           const cell = e.target.closest('.cell-sched');
           if (!cell) return;
@@ -829,7 +871,6 @@
           isMousePainting = false;
         });
 
-        // Touch tap painting
         tbodyEl.addEventListener('touchstart', (e) => {
           const cell = e.target.closest('.cell-sched');
           if (!cell) return;
@@ -838,10 +879,9 @@
       }
 
       /**
-       * Sets up interactive toolbar controls (Palette, Print, Download, Reset).
+       * Binds toolbar buttons: Brush Palette, Reset, Download HTML, Print / Save as PDF.
        */
       function bindToolbarEvents() {
-        // Palette buttons
         const paletteBtns = document.querySelectorAll('.palette-btn');
         paletteBtns.forEach((btn) => {
           btn.addEventListener('click', () => {
@@ -851,29 +891,23 @@
           });
         });
 
-        // Print / Save as PDF
         document.getElementById('btnPrint').addEventListener('click', () => {
           window.print();
         });
 
-        // Reset to default 2026 colors
         document.getElementById('btnReset').addEventListener('click', () => {
           currentSchedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
           renderCalendar();
           showToast('Calendar colors reset to default 2026 schedule.');
         });
 
-        // Download current state as a clean standalone HTML file
         document.getElementById('btnDownload').addEventListener('click', () => {
           try {
-            // Clone document to embed current schedule state cleanly
             const clone = document.documentElement.cloneNode(true);
 
-            // Remove any existing saved-state script tag before adding fresh one
             const oldSaved = clone.querySelector('#savedScheduleState');
             if (oldSaved) oldSaved.remove();
 
-            // Inject current schedule JSON before the main app script
             const savedScript = document.createElement('script');
             savedScript.id = 'savedScheduleState';
             savedScript.textContent = 'window.__SAVED_SCHEDULE__ = ' + JSON.stringify(currentSchedule) + ';';
@@ -883,7 +917,6 @@
               mainScript.parentNode.insertBefore(savedScript, mainScript);
             }
 
-            // Ensure toast is hidden in exported file
             const cloneToast = clone.querySelector('#toast');
             if (cloneToast) cloneToast.classList.add('hidden');
 
@@ -907,7 +940,7 @@
         });
       }
 
-      // Initialize on DOM ready
+      // Initialize application
       renderCalendar();
       bindPaintingEvents();
       bindToolbarEvents();
